@@ -1,0 +1,66 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Meniu from "./pages/Meniu";
+import Harta from "./pages/Harta";
+import AdaugaCerere from "./pages/AdaugaCerere";
+import TopDonatori from "./pages/TopDonatori";
+import DonariDeschise from "./pages/DonariDeschise";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/Signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+
+        {/* Toate paginile de mai jos sunt protejate */}
+        <Route
+          path="/meniu"
+          element={
+            <ProtectedRoute>
+              <Meniu />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/harta"
+          element={
+            <ProtectedRoute>
+              <Harta />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adauga-cerere"
+          element={
+            <ProtectedRoute>
+              <AdaugaCerere />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/top-donatori"
+          element={
+            <ProtectedRoute>
+              <TopDonatori />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/donari-deschise"
+          element={
+            <ProtectedRoute>
+              <DonariDeschise />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;

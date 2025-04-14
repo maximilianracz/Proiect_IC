@@ -1,15 +1,22 @@
 const mongoose = require("mongoose");
 
-const produsSchema = new mongoose.Schema({
-  tip: String,
-  marime: String,
-  cantitate: Number,
-});
-
 const donatieSchema = new mongoose.Schema({
   nume: String,
   adresa: String,
-  produse: [produsSchema],
+  produse: [
+    {
+      tip: String,
+      marime: String,
+      cantitate: Number,
+    },
+  ],
+  status: {
+    type: String,
+    enum: ["deschis", "inchis"],
+    default: "deschis",
+  },
 });
 
-module.exports = mongoose.model("Donatie", donatieSchema);
+const Donation = mongoose.model("Donation", donatieSchema);
+
+module.exports = Donation;

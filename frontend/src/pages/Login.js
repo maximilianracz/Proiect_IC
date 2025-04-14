@@ -9,11 +9,11 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      navigate("/meniu");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   if (localStorage.getItem("user")) {
+  //     navigate("/meniu");
+  //   }
+  // }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();

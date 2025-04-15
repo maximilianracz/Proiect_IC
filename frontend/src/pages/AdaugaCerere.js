@@ -29,19 +29,22 @@ const AdaugaCerere = () => {
     });
 
     if (response.ok) {
-      setMesaj("Cerere trimisă cu succes!");
+      setMesaj("✅ Cerere trimisă cu succes!");
       setNume("");
       setAdresa("");
       setProduse([{ tip: "", marime: "", cantitate: 1 }]);
     } else {
-      setMesaj("Eroare la trimitere!");
+      setMesaj("❌ Eroare la trimitere!");
     }
+
+    setTimeout(() => setMesaj(""), 3000); // Șterge mesajul după 3 sec
   };
 
   return (
     <div className="form-container">
-      <h2>Adaugă Cerere Donație</h2>
+      <h2>📥 Adaugă Cerere Donație</h2>
       {mesaj && <p className="message">{mesaj}</p>}
+
       <form onSubmit={handleSubmit} className="donation-form">
         <input type="text" placeholder="Nume" value={nume} onChange={(e) => setNume(e.target.value)} required />
         <input type="text" placeholder="Adresă" value={adresa} onChange={(e) => setAdresa(e.target.value)} required />
@@ -73,10 +76,15 @@ const AdaugaCerere = () => {
           </div>
         ))}
 
-        <button type="button" onClick={handleAddProdus}>Adaugă produs</button>
-        <button type="submit">Trimite Cererea</button>
+        <button type="button" className="btn secondary" onClick={handleAddProdus}>
+          ➕ Adaugă produs
+        </button>
+        <button type="submit" className="btn primary">
+          🚀 Trimite Cererea
+        </button>
       </form>
-      <button className="back-btn" onClick={() => navigate("/meniu")}>Înapoi la Meniu</button>
+
+      <button className="back-btn" onClick={() => navigate("/meniu")}>⬅️ Înapoi la Meniu</button>
     </div>
   );
 };

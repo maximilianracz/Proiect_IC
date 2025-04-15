@@ -13,7 +13,8 @@ const Meniu = () => {
   return (
     <div className="meniu-page">
       <div className="meniu-card">
-        <h1 className="meniu-title">Meniu Principal</h1>
+        <h1 className="meniu-title">📋 Meniu Principal</h1>
+        <p className="meniu-subtitle">Alege o acțiune pentru a continua</p>
 
         <div className="meniu-buttons">
           <button onClick={() => navigate("/harta")}>🗺️ Harta</button>

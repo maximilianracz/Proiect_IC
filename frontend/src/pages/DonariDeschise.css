@@ -1,44 +1,101 @@
+body {
+  margin: 0;
+  background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+  font-family: "Segoe UI", sans-serif;
+}
+
 .donatii-container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #f0f8ff;
-    border-radius: 12px;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+h2 {
+  color: #3a006a;
+  margin-bottom: 20px;
+}
+
+.feedback-message {
+  font-weight: bold;
+  color: green;
+  margin-bottom: 20px;
+}
+
+.no-donations {
+  font-size: 18px;
+  color: #444;
+}
+
+.donatie-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  padding: 20px;
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+
+.donatie-card:hover {
+  transform: scale(1.02);
+}
+
+.donatie-card h3 {
+  margin-top: 0;
+  color: #2d0066;
+}
+
+.donatie-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.donatie-card li {
+  padding: 5px 0;
+}
+
+.btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+}
+
+.btn.primary {
+  background-color: #6a1b9a;
+  color: white;
+}
+
+.btn.primary:hover {
+  background-color: #4a0e6e;
+}
+
+.btn.secondary {
+  background-color: transparent;
+  color: #6a1b9a;
+  border: 2px solid #6a1b9a;
+}
+
+.btn.secondary:hover {
+  background-color: #6a1b9a;
+  color: white;
+}
+
+.back-btn {
+  margin-top: 30px;
+}
+
+.fade-in {
+  animation: fadeIn 0.7s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
   }
-  
-  .donatie-card {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .donatie-card h3 {
-    margin-top: 0;
-    color: #333;
-  }
-  
-  .donatie-card ul {
-    padding-left: 20px;
-  }
-  
-  .donatie-card li {
-    margin-bottom: 5px;
-  }
-  
-  .back-btn {
-    background-color: #2196f3;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: block;
-    margin: 20px auto 0;
-  }
-  
-  .back-btn:hover {
-    background-color: #1976d2;
-  }
-  
+}

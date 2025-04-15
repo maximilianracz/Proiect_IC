@@ -1,59 +1,94 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #e0c3fc, #8ec5fc);
+  font-family: 'Segoe UI', sans-serif;
+}
+
 .form-container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #f4f4f4;
-    border-radius: 12px;
-  }
-  
-  .donation-form input {
-    display: block;
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-  }
-  
-  .produs-group {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-  }
-  
-  .donation-form button {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  .donation-form button:hover {
-    background-color: #45a049;
-  }
-  
-  .message {
-    color: green;
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
-  
-  .back-btn {
-    margin-top: 20px;
-    background-color: #2196f3;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  .back-btn:hover {
-    background-color: #1976d2;
-  }
-  
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #4b007d;
+}
+
+.message {
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: green;
+}
+
+.message:contains("Eroare") {
+  color: red;
+}
+
+.donation-form input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.produs-group {
+  background-color: #f5f0ff;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 12px;
+  border: 1px solid #d2c1f0;
+}
+
+.btn {
+  padding: 10px 18px;
+  margin: 10px 5px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s ease;
+}
+
+.btn.primary {
+  background-color: #6c2b8f;
+  color: white;
+}
+
+.btn.primary:hover {
+  background-color: #501e6e;
+}
+
+.btn.secondary {
+  background-color: #e6e0ff;
+  color: #4b007d;
+}
+
+.btn.secondary:hover {
+  background-color: #d1c0f7;
+}
+
+.back-btn {
+  margin-top: 20px;
+  background-color: transparent;
+  color: #4b007d;
+  border: 2px solid #4b007d;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #4b007d;
+  color: white;
+}

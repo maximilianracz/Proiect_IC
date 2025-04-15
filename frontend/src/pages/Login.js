@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // 👁️ Toggle
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("user")) {
-  //     navigate("/meniu");
-  //   }
-  // }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -39,17 +33,17 @@ const Login = () => {
   return (
     <div className="login-page">
       <div className="login-card">
-        <h2 className="login-title">Bun venit înapoi!</h2>
-        <p className="login-subtitle">Te rugăm să te autentifici în contul tău</p>
+        <h2 className="login-title">👋 Bun venit înapoi!</h2>
+        <p className="login-subtitle">Autentifică-te pentru a continua</p>
 
         {error && <div className="login-error">{error}</div>}
 
         <form className="login-form" onSubmit={handleLogin}>
           <div className="input-group">
-            <span>📧</span>
+            <label>Email</label>
             <input
               type="email"
-              placeholder="Email"
+              placeholder="exemplu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -57,27 +51,27 @@ const Login = () => {
           </div>
 
           <div className="input-group password-group">
-            <span>🔒</span>
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Parolă"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button
-              type="button"
-              className="eye-toggle"
-              onClick={() => setShowPassword((prev) => !prev)}
-              aria-label="Toggle parola"
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </button>
+            <label>Parolă</label>
+            <div className="password-wrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Parolă"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="eye-toggle"
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label="Toggle parola"
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
           </div>
 
-          <button type="submit" className="login-button">
-            Autentificare
-          </button>
+          <button type="submit" className="login-button">🔐 Autentificare</button>
         </form>
 
         <div className="login-footer">

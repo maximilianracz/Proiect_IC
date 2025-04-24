@@ -1,0 +1,88 @@
+.top-donatori-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.title {
+  color: #2c3e50;
+  margin: 0;
+}
+
+.back-button {
+  padding: 8px 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.donatori-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.donatori-table th {
+  background-color: #3498db;
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.donatori-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.donatori-table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.donatori-table tr:hover {
+  background-color: #e9f7fe;
+}
+
+.rank {
+  font-weight: bold;
+  color: #e67e22;
+  width: 50px;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.points {
+  color: #27ae60;
+  text-align: right;
+}
+
+.loader,
+.no-data,
+.error-message {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+}
+
+.error-message {
+  color: #e74c3c;
+  background-color: #fde8e8;
+  border-radius: 4px;
+}

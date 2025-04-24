@@ -26,7 +26,8 @@ router.put("/:id/doneaza", async (req, res) => {
   const { userId } = req.body; // ID-ul utilizatorului este în corpul cererii
   const donatieId = req.params.id; // ID-ul donației este din URL
 
-  console.log("ID-ul donației primit în backend:", donatieId);  // Verifică ce ID se primește
+  //console.log("ID-ul donației primit în backend:", donatieId, userId);  // Verifică ce ID se primește
+ // console.log("ID-ul userului primit în backend:", userId);  // Verifică ce ID se primește
 
   try {
     const donatie = await Donation.findById(donatieId);

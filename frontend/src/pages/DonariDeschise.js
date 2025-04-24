@@ -45,11 +45,14 @@ const DonariDeschise = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId: user._id }),
+        body: JSON.stringify({ userId: user.id }),
       });
 
+      //console.log(user); // Verifică dacă obiectul user există
+      //console.log(user.id); // Verifică dacă ID-ul este prezent
+
       if (response.ok) {
-        setDonatii(donatii.filter(d => d._id !== donatieId));
+        setDonatii(donatii.filter(d => d._id.toString() !== donatieId));
         setFeedback("✅ Donația a fost procesată cu succes!");
       } else {
         setFeedback("❌ Eroare la procesarea donației!");

@@ -1,48 +1,79 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Top10Donatori.css"; // Asigură-te că ai acest fișier CSS
+import "./TopDonatori.css";
 
 const Top10Donatori = () => {
   const [donatori, setDonatori] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-    const sortedDonatori = storedUsers
-      .filter(user => user.puncte > 0)
-      .sort((a, b) => b.puncte - a.puncte)
-      .slice(0, 10);
+    const fetchDonatori = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/donatii/top");
+        
+        if (!response.ok) {
+          throw new Error(`Eroare server: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log("Date de la backend:", data);
+        
+        const sortedDonatori = data
+          .filter(user => user && (user.puncte > 0 || user.puncte === 0))
+          .sort((a, b) => b.puncte - a.puncte)
+          .slice(0, 10);
+        
+        setDonatori(sortedDonatori);
+      } catch (error) {
+        console.error("Eroare:", error);
+        setError("Nu s-au putut încărca donatorii");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    setDonatori(sortedDonatori);
-    setTimeout(() => setLoading(false), 500); // Simulează încărcare
+    fetchDonatori();
   }, []);
 
   return (
-    <div className="container">
-      <h2 className="title">🏆 Top 10 Donatori</h2>
+    <div className="top-donatori-container">
+      <div className="header">
+        <h2 className="title">🏆 Top 10 Donatori</h2>
+        <button className="back-button" onClick={() => navigate("/meniu")}>
+          Înapoi la Meniu
+        </button>
+      </div>
 
-      {loading ? (
-        <div className="loader"></div>
+      {error ? (
+        <p className="error-message">{error}</p>
+      ) : loading ? (
+        <div className="loader">Se încarcă...</div>
       ) : donatori.length === 0 ? (
-        <p className="no-data">Nu există donatori.</p>
+        <p className="no-data">Nu există donatori cu puncte.</p>
       ) : (
-        <ul className="donatori-list">
-          {donatori.map((donator, index) => (
-            <li className="donator-card" key={index}>
-              <div className="rank">{index + 1}.</div>
-              <div className="info">
-                <p className="username">{donator.username}</p>
-                <p className="points">{donator.puncte} puncte</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div className="table-container">
+          <table className="donatori-table">
+            <thead>
+              <tr>
+                <th>Loc</th>
+                <th>Nume</th>
+                <th>Puncte</th>
+              </tr>
+            </thead>
+            <tbody>
+              {donatori.map((donator, index) => (
+                <tr key={donator._id || index} className="donator-row">
+                  <td className="rank">{index + 1}.</td>
+                  <td className="username">{donator.username || "Utilizator fără nume"}</td>
+                  <td className="points">{donator.puncte}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
-
-      <button className="back-button" onClick={() => navigate("/meniu")}>
-        Înapoi la Meniu
-      </button>
     </div>
   );
 };

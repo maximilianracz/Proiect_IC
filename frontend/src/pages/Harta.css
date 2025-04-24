@@ -1,0 +1,45 @@
+.harta-page {
+    padding: 20px;
+  }
+  
+  .harta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .back-button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .map-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .donation-popup {
+    min-width: 200px;
+  }
+  
+  .details-button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .loading-spinner {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+  }

@@ -15,6 +15,11 @@ const donatieSchema = new mongoose.Schema({
     enum: ["deschis", "inchis"],
     default: "deschis",
   },
+  donatedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User", 
+    default: null,
+  },
 });
 
 const Donation = mongoose.model("Donation", donatieSchema);

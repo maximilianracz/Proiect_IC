@@ -7,7 +7,7 @@ const AdaugaCerere = () => {
   const [adresa, setAdresa] = useState("");
   const [produse, setProduse] = useState([{ tip: "", marime: "", cantitate: 1 }]);
   const [mesaj, setMesaj] = useState("");
-  const [username, setUsername] = useState(""); // Stocăm numele utilizatorului
+  const [username, setUsername] = useState(""); 
   const navigate = useNavigate();
 
   // Preluăm numele utilizatorului din localStorage
@@ -46,19 +46,20 @@ const AdaugaCerere = () => {
       setMesaj("❌ Eroare la trimitere!");
     }
 
-    setTimeout(() => setMesaj(""), 3000); // Șterge mesajul după 3 sec
+    setTimeout(() => setMesaj(""), 3000); 
+  };
+
+  const handleGoToProfil = () => {
+    navigate("/profil");
   };
 
   return (
     <div className="form-container">
-      {/* Caseta de salut cu numele utilizatorului */}
-      <div className="user-greeting">
-        {username && (
-          <div className="greeting-box">
-            👋 Bună, <span className="username">{username}</span>!
-          </div>
-        )}
-      </div>
+      {username && (
+        <div className="user-greeting" onClick={handleGoToProfil}>
+          👋 Hello, <span className="username">{username}</span>!
+        </div>
+      )}
 
       <h2>📥 Adaugă Cerere Donație</h2>
       {mesaj && <p className="message">{mesaj}</p>}

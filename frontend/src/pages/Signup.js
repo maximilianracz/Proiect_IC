@@ -77,7 +77,7 @@ const Signup = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              style={{ paddingRight: "2rem" }} // spațiu pentru 👁️
+              style={{ paddingRight: "2rem" }} 
             />
             <button
               type="button"

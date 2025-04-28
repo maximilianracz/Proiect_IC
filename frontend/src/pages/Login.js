@@ -23,7 +23,7 @@ const Login = () => {
 
     if (response.ok) {
       localStorage.setItem("user", JSON.stringify(data.user));
-      alert("Login reușit!");
+      //alert("Login reușit!");
       navigate("/meniu");
     } else {
       setError(data.message || "Eroare la login!");

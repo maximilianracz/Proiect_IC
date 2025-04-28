@@ -9,7 +9,6 @@ const DonariDeschise = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Preluăm utilizatorul din localStorage
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) setUser(storedUser);
@@ -26,6 +25,10 @@ const DonariDeschise = () => {
 
     fetchDonatii();
   }, []);
+
+  const handleGoToProfil = () => {
+    navigate("/profil");
+  };
 
   // Logica pentru procesarea donației
   const handleDonate = async (donatieId, produse) => {
@@ -67,9 +70,8 @@ const DonariDeschise = () => {
 
   return (
     <div className="donatii-container">
-      {/* Caseta de salut cu numele utilizatorului */}
       {user && (
-        <div className="user-greeting">
+        <div className="user-greeting" onClick={handleGoToProfil} style={{ cursor: "pointer" }}>
           👋 Bună, <span className="username">{user.username}</span>!
         </div>
       )}

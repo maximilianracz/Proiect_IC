@@ -7,6 +7,7 @@ import Harta from "./pages/Harta";
 import AdaugaCerere from "./pages/AdaugaCerere";
 import TopDonatori from "./pages/TopDonatori";
 import DonariDeschise from "./pages/DonariDeschise";
+import Profil from "./pages/Profil";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
 
-        {/* Toate paginile de mai    jos sunt    protejate  */}
+        {/* Toate paginile de mai jos sunt protejate */}
         <Route
           path="/meniu"
           element={
@@ -55,6 +56,14 @@ function App() {
           element={
             <ProtectedRoute>
               <DonariDeschise />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profil"
+          element={
+            <ProtectedRoute>
+              <Profil />
             </ProtectedRoute>
           }
         />

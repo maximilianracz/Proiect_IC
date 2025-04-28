@@ -3,13 +3,13 @@ const router = express.Router();
 const Donation = require("../models/Donatie");
 const User = require("../models/User");
 
-// GET toate donațiile deschise
+
 router.get("/", async (req, res) => {
   const donatii = await Donation.find({ status: "deschis" });
   res.json(donatii);
 });
 
-// POST o nouă cerere de donație
+
 router.post("/", async (req, res) => {
   const { nume, adresa, produse } = req.body;
   try {
@@ -40,7 +40,8 @@ router.put("/:id/doneaza", async (req, res) => {
     user.puncte += numarArticole * 10;
     await user.save();
 
-    donatie.status = "inchis"; // Marchez donația ca "închisă"
+    donatie.status = "inchis"; 
+    donatie.donatedBy = userId;
     await donatie.save();
 
     res.json({ message: "Donația a fost procesată cu succes." });
@@ -67,4 +68,24 @@ router.get("/top", async (req, res) => {
   }
 });
 
+router.get("/profil/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId).select("username puncte");
+    if (!user) return res.status(404).json({ error: "Utilizatorul nu a fost găsit." });
+
+    const donatiiUser = await Donation.find({ donatedBy: userId });
+
+    res.json({
+      user,
+      donatii: donatiiUser,
+    });
+  } catch (err) {
+    res.status(500).json({ error: "Eroare la obținerea datelor de profil." });
+  }
+});
+
+
 module.exports = router;
+

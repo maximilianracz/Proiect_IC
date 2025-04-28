@@ -1,9 +1,11 @@
+
 body {
   margin: 0;
   padding: 0;
   background: linear-gradient(to right, #e0c3fc, #8ec5fc);
   font-family: 'Segoe UI', sans-serif;
 }
+
 
 .form-container {
   max-width: 600px;
@@ -15,10 +17,12 @@ body {
   text-align: center;
 }
 
+
 h2 {
   margin-bottom: 20px;
   color: #4b007d;
 }
+
 
 .message {
   margin-bottom: 15px;
@@ -26,9 +30,11 @@ h2 {
   color: green;
 }
 
+
 .message:contains("Eroare") {
   color: red;
 }
+
 
 .donation-form input {
   display: block;
@@ -42,20 +48,20 @@ h2 {
 
 .produs-group {
   background-color: #f5f0ff;
-  padding: 15px;
+  padding: 20px;
   margin: 15px 0;
   border-radius: 12px;
   border: 1px solid #d2c1f0;
 }
 
 .btn {
-  padding: 10px 18px;
-  margin: 10px 5px;
+  padding: 12px 20px;
+  margin: 15px 5px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
   font-size: 16px;
-  transition: 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .btn.primary {
@@ -76,12 +82,13 @@ h2 {
   background-color: #d1c0f7;
 }
 
+
 .back-btn {
   margin-top: 20px;
   background-color: transparent;
   color: #4b007d;
   border: 2px solid #4b007d;
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: 25px;
   font-size: 16px;
   cursor: pointer;
@@ -92,3 +99,23 @@ h2 {
   background-color: #4b007d;
   color: white;
 }
+
+
+.user-greeting {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.user-greeting .username {
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+

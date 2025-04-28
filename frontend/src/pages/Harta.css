@@ -1,9 +1,10 @@
-/* Stiluri pentru harta */
+
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #c2e9fb, #a1c4fd); /* Fundalul principal */
+  background: linear-gradient(to right, #c2e9fb, #a1c4fd); 
 }
+
 
 .harta-page {
   display: flex;
@@ -18,34 +19,38 @@ body {
   padding: 1rem 2rem;
   position: sticky;
   top: 0;
-  background: linear-gradient(to right, #c2e9fb, #a1c4fd); /* Fundal gradient pentru header */
+  background: linear-gradient(to right, #c2e9fb, #a1c4fd); 
   z-index: 10;
 }
 
-/* Inversează ordinea elementelor */
+
 .harta-header {
-  flex-direction: row-reverse; /* Inversăm ordinea elementelor în header */
+  flex-direction: row; 
+  justify-content: flex-start; 
 }
+
 
 .user-greeting {
   font-size: 1.2rem;
   font-weight: bold;
   color: white;
-  background-color: #6c63ff; /* Albastru pentru caseta */
+  background-color: #6c63ff; 
   padding: 0.5rem 1rem;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 300px; /* Ajustează lățimea casetei */
-  margin-left: auto; /* Plasează salutul în dreapta */
+  max-width: 300px; 
+  margin-left: auto; 
 }
+
 
 .username {
   font-weight: 600;
   font-size: 1.4rem;
   margin-left: 0.5rem;
 }
+
 
 .back-button {
   padding: 0.5rem 1rem;
@@ -56,12 +61,15 @@ body {
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin-right: auto; 
 }
+
 
 .back-button:hover {
   background: #574ee2;
   transform: scale(1.02);
 }
+
 
 .map-container {
   flex: 1;
@@ -69,6 +77,7 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 
 .loading-spinner {
   text-align: center;

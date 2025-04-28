@@ -18,13 +18,12 @@ const Harta = () => {
   const [donations, setDonations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [username, setUsername] = useState(""); // Stocăm numele utilizatorului
+  const [username, setUsername] = useState(""); 
 
   // Coordonate centru (România)
   const centerPosition = [45.9432, 24.9668];
   const zoomLevel = 7;
 
-  // Preluăm numele utilizatorului din localStorage
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData && userData.username) {
@@ -43,7 +42,6 @@ const Harta = () => {
         
         const data = await response.json();
         
-        // Transformă datele pentru a include coordonatele
         const donationsWithCoords = await Promise.all(
           data.map(async (donation) => {
             const coords = await getCoordinatesFromAddress(donation.adresa);
@@ -84,7 +82,6 @@ const Harta = () => {
         };
       }
       
-      // Fallback pentru cazul în care nu găsim coordonate
       return {
         lat: centerPosition[0] + (Math.random() - 0.5) * 2,
         lng: centerPosition[1] + (Math.random() - 0.5) * 2
@@ -103,18 +100,19 @@ const Harta = () => {
     return <div className="error-message">{error}</div>;
   }
 
+  const handleGoToProfil = () => {
+    navigate("/profil");
+  };
+
   return (
     <div className="harta-page">
-      {/* Header cu salutarea utilizatorului și butonul de înapoi */}
       <div className="harta-header">
-        {/* Salutul utilizatorului */}
         {username && (
-          <div className="user-greeting">
-            👋 Bună, <span className="username">{username}</span>!
+          <div className="user-greeting" onClick={handleGoToProfil}>
+            👋 Hello, <span className="username">{username}</span>!
           </div>
         )}
         
-        {/* Butonul Înapoi la Meniu */}
         <button 
           className="back-button"
           onClick={() => navigate("/meniu")}

@@ -6,7 +6,6 @@ const Meniu = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
 
-  // Preluăm numele utilizatorului la încărcarea componentei
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData && userData.username) {
@@ -16,16 +15,19 @@ const Meniu = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    localStorage.removeItem("token"); // Ștergem și token-ul
+    localStorage.removeItem("token");
     navigate("/login", { replace: true });
+  };
+
+  const goToProfil = () => {
+    navigate("/profil"); 
   };
 
   return (
     <div className="meniu-page">
-      {/* Header cu salutarea utilizatorului */}
       <div className="meniu-header">
         {username && (
-          <div className="user-greeting">
+          <div className="user-greeting" onClick={goToProfil} style={{ cursor: "pointer" }}>
             👋 Bună, <span className="username">{username}</span>!
           </div>
         )}

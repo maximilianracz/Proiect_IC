@@ -21,21 +21,26 @@ body {
   font-size: 1.2rem;
   font-weight: bold;
   color: white;
-  background-color: #6c63ff; /* Albastru pentru caseta */
+  background-color: #6c63ff;
   padding: 0.5rem 1rem;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 300px; /* Ajustează lățimea casetei */
+  max-width: 300px;
 }
 
 .username {
   font-weight: 600;
   font-size: 1.4rem;
-  margin-left: 0.5rem; /* Pentru a da puțin spațiu între icon și nume */
+  margin-left: 0.5rem;
 }
+
+.user-greeting:hover {
+  text-decoration: underline;
+}
+
 
 .meniu-content {
   flex: 1;

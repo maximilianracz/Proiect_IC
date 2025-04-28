@@ -65,7 +65,7 @@ body {
   background: transparent;
   font-size: 1rem;
   outline: none;
-  padding-right: 2rem; /* rezervăm spațiu pentru 👁️ */
+  padding-right: 2rem; 
 }
 
 .password-group {
@@ -74,7 +74,7 @@ body {
 
 .eye-toggle {
   position: absolute;
-  right: 10px; /* mutat mai la stânga */
+  right: 10px; 
   top: 50%;
   transform: translateY(-50%);
   background: none;

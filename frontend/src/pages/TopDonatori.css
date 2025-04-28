@@ -6,18 +6,24 @@
 }
 
 .header {
+  position: relative; 
   display: flex;
-  justify-content: space-between;
+  justify-content: center; 
   align-items: center;
   margin-bottom: 30px;
 }
 
 .title {
   color: #2c3e50;
-  margin: 0;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .back-button {
+  position: fixed; 
+  top: 20px;        
+  left: 20px;       
+  
   padding: 8px 16px;
   background-color: #3498db;
   color: white;
@@ -25,11 +31,14 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  z-index: 1000; 
 }
+
 
 .table-container {
   overflow-x: auto;
 }
+
 
 .donatori-table {
   width: 100%;
@@ -38,12 +47,14 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+
 .donatori-table th {
   background-color: #3498db;
   color: white;
   padding: 12px;
   text-align: left;
 }
+
 
 .donatori-table td {
   padding: 12px;
@@ -57,6 +68,7 @@
 .donatori-table tr:hover {
   background-color: #e9f7fe;
 }
+
 
 .rank {
   font-weight: bold;
@@ -72,6 +84,7 @@
   color: #27ae60;
   text-align: right;
 }
+
 
 .loader,
 .no-data,

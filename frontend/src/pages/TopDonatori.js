@@ -6,11 +6,11 @@ const Top10Donatori = () => {
   const [donatori, setDonatori] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [user, setUser] = useState(null); // Stocăm utilizatorul autentificat
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Preluăm utilizatorul din localStorage
+  
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) setUser(storedUser);
 
@@ -42,16 +42,23 @@ const Top10Donatori = () => {
     fetchDonatori();
   }, []);
 
+  const handleGoToProfil = () => {
+    navigate("/profil");
+  };
+
   return (
     <div className="top-donatori-container">
-      {/* Butonul Înapoi la Meniu plasat deasupra titlului */}
       <button className="back-button" onClick={() => navigate("/meniu")}>
         Înapoi la Meniu
       </button>
 
-      {/* Caseta de salut cu numele utilizatorului */}
       {user && (
-        <div className="user-greeting">
+        <div 
+          className="user-greeting" 
+          onClick={handleGoToProfil} 
+          style={{ cursor: "pointer" }}
+          title="Mergi la profil"
+        >
           👋 Bună, <span className="username">{user.username}</span>!
         </div>
       )}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdaugaCerere.css";
 
@@ -7,7 +7,16 @@ const AdaugaCerere = () => {
   const [adresa, setAdresa] = useState("");
   const [produse, setProduse] = useState([{ tip: "", marime: "", cantitate: 1 }]);
   const [mesaj, setMesaj] = useState("");
+  const [username, setUsername] = useState(""); // Stocăm numele utilizatorului
   const navigate = useNavigate();
+
+  // Preluăm numele utilizatorului din localStorage
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData && userData.username) {
+      setUsername(userData.username);
+    }
+  }, []);
 
   const handleChangeProdus = (index, field, value) => {
     const newProduse = [...produse];
@@ -42,12 +51,33 @@ const AdaugaCerere = () => {
 
   return (
     <div className="form-container">
+      {/* Caseta de salut cu numele utilizatorului */}
+      <div className="user-greeting">
+        {username && (
+          <div className="greeting-box">
+            👋 Bună, <span className="username">{username}</span>!
+          </div>
+        )}
+      </div>
+
       <h2>📥 Adaugă Cerere Donație</h2>
       {mesaj && <p className="message">{mesaj}</p>}
 
       <form onSubmit={handleSubmit} className="donation-form">
-        <input type="text" placeholder="Nume" value={nume} onChange={(e) => setNume(e.target.value)} required />
-        <input type="text" placeholder="Adresă" value={adresa} onChange={(e) => setAdresa(e.target.value)} required />
+        <input
+          type="text"
+          placeholder="Nume"
+          value={nume}
+          onChange={(e) => setNume(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Adresă"
+          value={adresa}
+          onChange={(e) => setAdresa(e.target.value)}
+          required
+        />
         
         {produse.map((produs, index) => (
           <div key={index} className="produs-group">

@@ -1,14 +1,47 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #c2e9fb, #a1c4fd);
+  min-height: 100vh;
 }
 
 .meniu-page {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
+}
+
+.meniu-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 2rem;
+}
+
+.user-greeting {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  background-color: #6c63ff; /* Albastru pentru caseta */
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 300px; /* Ajustează lățimea casetei */
+}
+
+.username {
+  font-weight: 600;
+  font-size: 1.4rem;
+  margin-left: 0.5rem; /* Pentru a da puțin spațiu între icon și nume */
+}
+
+.meniu-content {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to right, #c2e9fb, #a1c4fd);
 }
 
 .meniu-card {
@@ -19,6 +52,8 @@ body {
   text-align: center;
   width: 100%;
   max-width: 500px;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
 }
 
 .meniu-title {

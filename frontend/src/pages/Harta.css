@@ -1,45 +1,82 @@
+/* Stiluri pentru harta */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #c2e9fb, #a1c4fd); /* Fundalul principal */
+}
+
 .harta-page {
-    padding: 20px;
-  }
-  
-  .harta-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .back-button {
-    padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .map-container {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .donation-popup {
-    min-width: 200px;
-  }
-  
-  .details-button {
-    margin-top: 10px;
-    padding: 5px 10px;
-    background-color: #2196F3;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  .loading-spinner {
-    text-align: center;
-    padding: 50px;
-    font-size: 18px;
-  }
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.harta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  background: linear-gradient(to right, #c2e9fb, #a1c4fd); /* Fundal gradient pentru header */
+  z-index: 10;
+}
+
+/* Inversează ordinea elementelor */
+.harta-header {
+  flex-direction: row-reverse; /* Inversăm ordinea elementelor în header */
+}
+
+.user-greeting {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  background-color: #6c63ff; /* Albastru pentru caseta */
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 300px; /* Ajustează lățimea casetei */
+  margin-left: auto; /* Plasează salutul în dreapta */
+}
+
+.username {
+  font-weight: 600;
+  font-size: 1.4rem;
+  margin-left: 0.5rem;
+}
+
+.back-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background: #574ee2;
+  transform: scale(1.02);
+}
+
+.map-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-spinner {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  font-size: 1.5rem;
+}

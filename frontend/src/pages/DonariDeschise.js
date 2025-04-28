@@ -9,6 +9,7 @@ const DonariDeschise = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Preluăm utilizatorul din localStorage
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) setUser(storedUser);
@@ -26,6 +27,7 @@ const DonariDeschise = () => {
     fetchDonatii();
   }, []);
 
+  // Logica pentru procesarea donației
   const handleDonate = async (donatieId, produse) => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
@@ -48,9 +50,6 @@ const DonariDeschise = () => {
         body: JSON.stringify({ userId: user.id }),
       });
 
-      //console.log(user); // Verifică dacă obiectul user există
-      //console.log(user.id); // Verifică dacă ID-ul este prezent
-
       if (response.ok) {
         setDonatii(donatii.filter(d => d._id.toString() !== donatieId));
         setFeedback("✅ Donația a fost procesată cu succes!");
@@ -68,12 +67,19 @@ const DonariDeschise = () => {
 
   return (
     <div className="donatii-container">
+      {/* Caseta de salut cu numele utilizatorului */}
+      {user && (
+        <div className="user-greeting">
+          👋 Bună, <span className="username">{user.username}</span>!
+        </div>
+      )}
+
       <h2>📦 Donări Deschise</h2>
       {feedback && <p className="feedback-message">{feedback}</p>}
       {donatii.length === 0 ? (
         <p className="no-donations">Nu există cereri de donație înregistrate.</p>
       ) : (
-        donatii.map((donatie, index) => (
+        donatii.map((donatie) => (
           <div key={donatie._id} className="donatie-card fade-in">
             <h3>{donatie.nume}</h3>
             <p><strong>📍 Adresă:</strong> {donatie.adresa}</p>

@@ -6,9 +6,14 @@ const Top10Donatori = () => {
   const [donatori, setDonatori] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null); // Stocăm utilizatorul autentificat
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Preluăm utilizatorul din localStorage
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) setUser(storedUser);
+
     const fetchDonatori = async () => {
       try {
         const response = await fetch("http://localhost:5000/donatii/top");
@@ -39,11 +44,20 @@ const Top10Donatori = () => {
 
   return (
     <div className="top-donatori-container">
+      {/* Butonul Înapoi la Meniu plasat deasupra titlului */}
+      <button className="back-button" onClick={() => navigate("/meniu")}>
+        Înapoi la Meniu
+      </button>
+
+      {/* Caseta de salut cu numele utilizatorului */}
+      {user && (
+        <div className="user-greeting">
+          👋 Bună, <span className="username">{user.username}</span>!
+        </div>
+      )}
+
       <div className="header">
         <h2 className="title">🏆 Top 10 Donatori</h2>
-        <button className="back-button" onClick={() => navigate("/meniu")}>
-          Înapoi la Meniu
-        </button>
       </div>
 
       {error ? (

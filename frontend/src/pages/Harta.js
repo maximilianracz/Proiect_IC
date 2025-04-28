@@ -18,10 +18,19 @@ const Harta = () => {
   const [donations, setDonations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [username, setUsername] = useState(""); // Stocăm numele utilizatorului
 
   // Coordonate centru (România)
   const centerPosition = [45.9432, 24.9668];
   const zoomLevel = 7;
+
+  // Preluăm numele utilizatorului din localStorage
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData && userData.username) {
+      setUsername(userData.username);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchDonations = async () => {
@@ -96,8 +105,16 @@ const Harta = () => {
 
   return (
     <div className="harta-page">
+      {/* Header cu salutarea utilizatorului și butonul de înapoi */}
       <div className="harta-header">
-        <h2>Harta Donațiilor</h2>
+        {/* Salutul utilizatorului */}
+        {username && (
+          <div className="user-greeting">
+            👋 Bună, <span className="username">{username}</span>!
+          </div>
+        )}
+        
+        {/* Butonul Înapoi la Meniu */}
         <button 
           className="back-button"
           onClick={() => navigate("/meniu")}

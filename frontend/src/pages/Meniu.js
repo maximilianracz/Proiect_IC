@@ -28,7 +28,7 @@ const Meniu = () => {
       <div className="meniu-header">
         {username && (
           <div className="user-greeting" onClick={goToProfil} style={{ cursor: "pointer" }}>
-            👋 Bună, <span className="username">{username}</span>!
+            👋 Hello, <span className="username">{username}</span>!
           </div>
         )}
       </div>

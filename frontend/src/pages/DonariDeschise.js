@@ -72,7 +72,7 @@ const DonariDeschise = () => {
     <div className="donatii-container">
       {user && (
         <div className="user-greeting" onClick={handleGoToProfil} style={{ cursor: "pointer" }}>
-          👋 Bună, <span className="username">{user.username}</span>!
+          👋 Hello, <span className="username">{user.username}</span>!
         </div>
       )}
 

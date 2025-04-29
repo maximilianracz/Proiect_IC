@@ -5,11 +5,23 @@ const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    setIsAuthenticated(!!user);
+    try {
+      const storedUser = localStorage.getItem("user");
+      const user = storedUser ? JSON.parse(storedUser) : null;
+      setIsAuthenticated(!!user);
+    } catch (error) {
+      console.error("Eroare la parsarea user-ului din localStorage:", error);
+      setIsAuthenticated(false);
+    }
   }, []);
 
-  if (isAuthenticated === null) return null; // sau un spinner
+  if (isAuthenticated === null) {
+    return (
+      <div style={{ textAlign: "center", paddingTop: "50px" }}>
+        <p>Verificare autentificare...</p>
+      </div>
+    );
+  }
 
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 };

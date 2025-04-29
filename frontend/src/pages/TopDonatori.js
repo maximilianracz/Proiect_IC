@@ -59,7 +59,7 @@ const Top10Donatori = () => {
           style={{ cursor: "pointer" }}
           title="Mergi la profil"
         >
-          👋 Bună, <span className="username">{user.username}</span>!
+          👋 Hello, <span className="username">{user.username}</span>!
         </div>
       )}
 

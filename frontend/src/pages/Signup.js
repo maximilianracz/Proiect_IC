@@ -70,23 +70,24 @@ const Signup = () => {
 
           <div className="input-group password-group">
             <label htmlFor="password">🔒</label>
-            <input
-              id="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Parolă"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              style={{ paddingRight: "2rem" }} 
-            />
-            <button
-              type="button"
-              className="eye-toggle"
-              onClick={() => setShowPassword((prev) => !prev)}
-              aria-label="Afișează/Ascunde parola"
-            >
-              👁️
-            </button>
+            <div className="password-wrapper">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Parolă"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="eye-toggle"
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label="Afișează/Ascunde parola"
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
           </div>
 
           <button type="submit" className="signup-button">

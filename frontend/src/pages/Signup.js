@@ -10,9 +10,19 @@ const Signup = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (!validateEmail(email)) {
+      setError("Te rugăm să introduci un email valid.");
+      return;
+    }
 
     try {
       const response = await fetch("http://localhost:5000/auth/signup", {
@@ -25,7 +35,6 @@ const Signup = () => {
 
       if (response.ok) {
         localStorage.setItem("user", JSON.stringify(data.user));
-        alert("Înregistrare reușită!");
         navigate("/meniu");
       } else {
         setError(data.message || "Eroare la înregistrare!");

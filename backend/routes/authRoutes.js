@@ -2,12 +2,19 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const { sendWelcomeEmail } = require("../mailer"); // importă funcția de email
 
 const router = express.Router();
 
 // Înregistrare utilizator
 router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
+
+  // Validare format email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: "Email invalid!" });
+  }
 
   try {
     const userExists = await User.findOne({ email });
@@ -19,8 +26,12 @@ router.post("/signup", async (req, res) => {
     const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
 
+    // Trimite email de bun venit
+    await sendWelcomeEmail(email, username);
+
     res.status(201).json({ message: "Utilizator creat cu succes!" });
   } catch (error) {
+    console.error("Eroare la înregistrare:", error);
     res.status(500).json({ message: "Eroare la server!" });
   }
 });

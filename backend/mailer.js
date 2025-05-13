@@ -10,7 +10,7 @@ async function sendWelcomeEmail(to, name) {
   });
 
   const mailOptions = {
-    from: "adresa-ta@gmail.com",
+    from: "rujaroxana31@gmail.com",
     to,
     subject: "🎉 Bun venit!",
     text: `Salut ${name},\n\nÎți mulțumim că te-ai înregistrat pe platforma noastră!`,

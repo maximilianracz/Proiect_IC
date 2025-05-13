@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 
 const Login = () => {
@@ -23,7 +23,6 @@ const Login = () => {
 
     if (response.ok) {
       localStorage.setItem("user", JSON.stringify(data.user));
-      //alert("Login reușit!");
       navigate("/meniu");
     } else {
       setError(data.message || "Eroare la login!");
@@ -75,7 +74,8 @@ const Login = () => {
         </form>
 
         <div className="login-footer">
-          <p>Nu ai cont? <a href="/signup">Creează unul</a></p>
+          <p><Link to="/forgot-password">Ai uitat parola?</Link></p>
+          <p>Nu ai cont? <Link to="/signup">Creează unul</Link></p>
         </div>
       </div>
     </div>

@@ -8,17 +8,18 @@ const donatieSchema = new mongoose.Schema({
       tip: String,
       marime: String,
       cantitate: Number,
+      donat: { type: Boolean, default: false },
+      donatedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        default: null,
+      },
     },
   ],
   status: {
     type: String,
-    enum: ["deschis", "inchis"],
+    enum: ["deschis", "partial", "inchis"],
     default: "deschis",
-  },
-  donatedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User", 
-    default: null,
   },
 });
 

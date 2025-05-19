@@ -117,3 +117,58 @@ body {
 .signup-footer a:hover {
   text-decoration: underline;
 }
+
+.password-rules {
+  font-size: 0.85rem;
+  text-align: left;
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+  color: #333;
+}
+
+.password-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.password-rule.valid {
+  color: green;
+}
+
+.password-rule.invalid {
+  color: #ff4d4f;
+}
+
+.password-strength {
+  margin-top: 0.5rem;
+  height: 8px;
+  border-radius: 5px;
+  background-color: #eee;
+  overflow: hidden;
+}
+
+.password-strength-bar {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.strength-text {
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  text-align: left;
+  margin-left: 0.5rem;
+  font-weight: 500;
+}
+
+.strength-weak {
+  color: #ff4d4f;
+}
+
+.strength-medium {
+  color: #faad14;
+}
+
+.strength-strong {
+  color: #52c41a;
+}

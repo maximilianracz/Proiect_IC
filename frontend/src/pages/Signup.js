@@ -15,12 +15,50 @@ const Signup = () => {
     return emailRegex.test(email);
   };
 
+  const hasUppercase = (pwd) => /[A-Z]/.test(pwd);
+  const hasSpecialChar = (pwd) => /[^A-Za-z0-9]/.test(pwd);
+  const hasDigit = (pwd) => /[0-9]/.test(pwd);
+  const isLongEnough = (pwd) => pwd.length >= 8;
+
+  const isValidPassword = (pwd) =>
+    hasUppercase(pwd) && hasSpecialChar(pwd) && isLongEnough(pwd);
+
+  const getPasswordStrength = (pwd) => {
+    let score = 0;
+    if (isLongEnough(pwd)) score++;
+    if (hasUppercase(pwd)) score++;
+    if (hasDigit(pwd)) score++;
+    if (hasSpecialChar(pwd)) score++;
+
+    let width = `${(score / 4) * 100}%`;
+    let color = "#ff4d4f";
+    let label = "Slabă";
+    let labelClass = "strength-weak";
+
+    if (score === 2) {
+      color = "#faad14";
+      label = "Mediocră";
+      labelClass = "strength-medium";
+    } else if (score >= 3) {
+      color = "#52c41a";
+      label = "Puternică";
+      labelClass = "strength-strong";
+    }
+
+    return { width, color, label, labelClass };
+  };
+
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
 
     if (!validateEmail(email)) {
       setError("Te rugăm să introduci un email valid.");
+      return;
+    }
+
+    if (!isValidPassword(password)) {
+      setError("Parola trebuie să aibă minim 8 caractere, o literă mare și un caracter special.");
       return;
     }
 
@@ -43,6 +81,8 @@ const Signup = () => {
       setError("A apărut o eroare la conectare!");
     }
   };
+
+  const strength = getPasswordStrength(password);
 
   return (
     <div className="signup-page">
@@ -97,6 +137,30 @@ const Signup = () => {
                 {showPassword ? "🙈" : "👁️"}
               </button>
             </div>
+          </div>
+
+          {/* Reguli parolă */}
+          <div className="password-rules">
+            <div className={`password-rule ${isLongEnough(password) ? "valid" : "invalid"}`}>
+              {isLongEnough(password) ? "✅" : "❌"} Minim 8 caractere
+            </div>
+            <div className={`password-rule ${hasUppercase(password) ? "valid" : "invalid"}`}>
+              {hasUppercase(password) ? "✅" : "❌"} Cel puțin o literă mare
+            </div>
+            <div className={`password-rule ${hasSpecialChar(password) ? "valid" : "invalid"}`}>
+              {hasSpecialChar(password) ? "✅" : "❌"} Cel puțin un caracter special
+            </div>
+          </div>
+
+          {/* Gradatie putere parolă */}
+          <div className="password-strength">
+            <div
+              className="password-strength-bar"
+              style={{ width: strength.width, backgroundColor: strength.color }}
+            ></div>
+          </div>
+          <div className={`strength-text ${strength.labelClass}`}>
+            Siguranță parolă: {strength.label}
           </div>
 
           <button type="submit" className="signup-button">

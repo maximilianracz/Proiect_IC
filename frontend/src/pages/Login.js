@@ -23,6 +23,8 @@ const Login = () => {
 
     if (response.ok) {
       localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("token", data.token);
+      console.log("Token salvat:", data.token);
       navigate("/meniu");
     } else {
       setError(data.message || "Eroare la login!");

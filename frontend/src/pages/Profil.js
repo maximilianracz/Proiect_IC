@@ -22,7 +22,7 @@ const Profil = () => {
         const data = await response.json();
 
         setUser(data.user);
-        setDonatii(data.donatii);
+        setDonatii(data.donatedItems || []);
       } catch (error) {
         console.error("Eroare la încărcarea profilului:", error);
       } finally {
@@ -61,15 +61,13 @@ const Profil = () => {
           ) : (
             <div className="donatii-list">
               {donatii.map((donatie) => (
-                <div key={donatie._id} className="donatie-card">
+                <div key={donatie.donationId} className="donatie-card">
                   <h3>{donatie.nume}</h3>
                   <p><strong>Adresă:</strong> {donatie.adresa}</p>
                   <div className="produse">
-                    {donatie.produse.map((produs, idx) => (
-                      <span key={idx} className="produs-tag">
-                        {produs.tip} ({produs.marime}) x{produs.cantitate}
-                      </span>
-                    ))}
+                    <span className="produs-tag">
+                      {donatie.produs.tip} ({donatie.produs.marime}) x{donatie.produs.cantitate}
+                    </span>
                   </div>
                 </div>
               ))}

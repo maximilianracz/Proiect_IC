@@ -1,17 +1,53 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
 const Donation = require("../models/Donatie");
 const User = require("../models/User");
+
+// Configure multer for image upload
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Doar fișiere imagine sunt permise!'));
+    }
+  }
+});
 
 router.get("/", async (req, res) => {
   const donatii = await Donation.find({ status: { $ne: "inchis" } });
   res.json(donatii);
 });
 
-router.post("/", async (req, res) => {
-  const { nume, adresa, produse } = req.body;
+router.post("/", upload.single('imagine'), async (req, res) => {
+  const { nume, adresa, tip, marime, cantitate, descriere } = req.body;
   try {
-    const nouaDonatie = new Donation({ nume, adresa, produse });
+    const produs = {
+      tip,
+      marime,
+      cantitate: Number(cantitate),
+      descriere
+    };
+
+    if (req.file) {
+      produs.imagine = {
+        data: req.file.buffer,
+        contentType: req.file.mimetype
+      };
+    }
+
+    const nouaDonatie = new Donation({
+      nume,
+      adresa,
+      produse: [produs]
+    });
+
     await nouaDonatie.save();
     res.status(201).json(nouaDonatie);
   } catch (err) {
@@ -104,6 +140,26 @@ router.get("/profil/:userId", async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ error: "Eroare la obținerea datelor de profil." });
+  }
+});
+
+// Add a new route to get product image
+router.get("/:donationId/produs/:produsIndex/imagine", async (req, res) => {
+  try {
+    const donatie = await Donation.findById(req.params.donationId);
+    if (!donatie) {
+      return res.status(404).json({ error: "Donația nu a fost găsită" });
+    }
+
+    const produs = donatie.produse[req.params.produsIndex];
+    if (!produs || !produs.imagine) {
+      return res.status(404).json({ error: "Imaginea nu a fost găsită" });
+    }
+
+    res.set('Content-Type', produs.imagine.contentType);
+    res.send(produs.imagine.data);
+  } catch (err) {
+    res.status(500).json({ error: "Eroare la obținerea imaginii" });
   }
 });
 

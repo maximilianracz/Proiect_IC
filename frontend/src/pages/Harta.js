@@ -68,6 +68,11 @@ const Harta = () => {
   // Funcție pentru geocoding (transformă adresă în coordonate)
   const getCoordinatesFromAddress = async (address) => {
     try {
+      if (!address) {
+        console.warn("Adresa lipsă pentru geocoding");
+        return centerPosition;
+      }
+
       // Folosește serviciul Nominatim de la OpenStreetMap
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&countrycodes=ro`
@@ -76,15 +81,20 @@ const Harta = () => {
       const data = await response.json();
       
       if (data && data.length > 0) {
-        return {
-          lat: parseFloat(data[0].lat),
-          lng: parseFloat(data[0].lon)
-        };
+        const lat = parseFloat(data[0].lat);
+        const lng = parseFloat(data[0].lon);
+        
+        // Verificăm dacă coordonatele sunt valide
+        if (!isNaN(lat) && !isNaN(lng)) {
+          return { lat, lng };
+        }
       }
       
+      // Dacă nu avem coordonate valide, returnăm o poziție aleatorie în jurul centrului
+      const randomOffset = 0.5; // Offset mai mic pentru a rămâne în România
       return {
-        lat: centerPosition[0] + (Math.random() - 0.5) * 2,
-        lng: centerPosition[1] + (Math.random() - 0.5) * 2
+        lat: centerPosition[0] + (Math.random() - 0.5) * randomOffset,
+        lng: centerPosition[1] + (Math.random() - 0.5) * randomOffset
       };
     } catch (err) {
       console.error("Eroare geocoding:", err);
@@ -132,25 +142,32 @@ const Harta = () => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
 
-          {donations.map((donation) => (
-            <Marker
-              key={donation.id}
-              position={[donation.lat, donation.lng]}
-            >
-              <Popup>
-                <div className="donation-popup">
-                  <h3>{donation.nume}</h3>
-                  <p><strong>Adresă:</strong> {donation.adresa}</p>
-                  <button 
-                    className="details-button"
-                    onClick={() => navigate("/donari-deschise")}
-                  >
-                    Vezi toate donațiile
-                  </button>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
+          {donations.map((donation) => {
+            // Verificăm dacă avem coordonate valide
+            if (typeof donation.lat === 'number' && typeof donation.lng === 'number' && 
+                !isNaN(donation.lat) && !isNaN(donation.lng)) {
+              return (
+                <Marker
+                  key={donation._id || donation.id}
+                  position={[donation.lat, donation.lng]}
+                >
+                  <Popup>
+                    <div className="donation-popup">
+                      <h3>{donation.nume}</h3>
+                      <p><strong>Adresă:</strong> {donation.adresa}</p>
+                      <button 
+                        className="details-button"
+                        onClick={() => navigate("/donari-deschise")}
+                      >
+                        Vezi toate donațiile
+                      </button>
+                    </div>
+                  </Popup>
+                </Marker>
+              );
+            }
+            return null;
+          })}
         </MapContainer>
       </div>
     </div>

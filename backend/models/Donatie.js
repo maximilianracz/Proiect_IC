@@ -8,6 +8,10 @@ const donatieSchema = new mongoose.Schema({
       tip: String,
       marime: String,
       cantitate: Number,
+      imagine: {
+        data: Buffer,
+        contentType: String
+      },
       donat: { type: Boolean, default: false },
       donatedBy: {
         type: mongoose.Schema.Types.ObjectId,

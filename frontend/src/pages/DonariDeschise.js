@@ -100,11 +100,14 @@ const DonariDeschise = () => {
 
   return (
     <div className="donatii-container">
-      {user && (
-        <div className="user-greeting" onClick={handleGoToProfil} style={{ cursor: "pointer" }}>
-          👋 Hello, <span className="username">{user.username}</span>! Puncte: {user.puncte || 0}
+      <div className="header">
+        <div className="user-greeting">
+          👋 Hello, <span className="username">{user?.username}</span>
         </div>
-      )}
+        <button className="back-button" onClick={() => navigate("/meniu")}>
+          Înapoi la Meniu
+        </button>
+      </div>
 
       <h2>📦 Donări Deschise</h2>
       {feedback && <p className="feedback-message">{feedback}</p>}
@@ -136,7 +139,6 @@ const DonariDeschise = () => {
           </div>
         ))
       )}
-      <button className="btn secondary back-btn" onClick={() => navigate("/meniu")}>⬅️ Înapoi la Meniu</button>
     </div>
   );
 };

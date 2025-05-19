@@ -21,7 +21,7 @@ const Signup = () => {
   const isLongEnough = (pwd) => pwd.length >= 8;
 
   const isValidPassword = (pwd) =>
-    hasUppercase(pwd) && hasSpecialChar(pwd) && isLongEnough(pwd);
+    hasUppercase(pwd) && hasSpecialChar(pwd) && hasDigit(pwd) && isLongEnough(pwd);
 
   const getPasswordStrength = (pwd) => {
     let score = 0;
@@ -58,7 +58,7 @@ const Signup = () => {
     }
 
     if (!isValidPassword(password)) {
-      setError("Parola trebuie să aibă minim 8 caractere, o literă mare și un caracter special.");
+      setError("Parola trebuie să aibă minim 8 caractere, o literă mare, o cifră și un caracter special.");
       return;
     }
 
@@ -150,6 +150,9 @@ const Signup = () => {
             <div className={`password-rule ${hasSpecialChar(password) ? "valid" : "invalid"}`}>
               {hasSpecialChar(password) ? "✅" : "❌"} Cel puțin un caracter special
             </div>
+            <div className={`password-rule ${hasDigit(password) ? "valid" : "invalid"}`}>
+              {hasDigit(password) ? "✅" : "❌"} Cel puțin o cifră
+            </div>
           </div>
 
           {/* Gradatie putere parolă */}
@@ -163,7 +166,11 @@ const Signup = () => {
             Siguranță parolă: {strength.label}
           </div>
 
-          <button type="submit" className="signup-button">
+          <button
+            type="submit"
+            className="signup-button"
+            disabled={!isValidPassword(password) || !validateEmail(email)}
+          >
             🚀 Înregistrare
           </button>
         </form>

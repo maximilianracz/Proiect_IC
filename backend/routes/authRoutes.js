@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const { sendWelcomeEmail } = require("../mailer"); // importă funcția de email
+const { sendWelcomeEmail, sendPasswordResetEmail } = require("../mailer");
 
 const router = express.Router();
 
@@ -51,6 +51,35 @@ router.post("/login", async (req, res) => {
 
     res.json({ token, user: { id: user._id, username: user.username, email: user.email } });
   } catch (error) {
+    res.status(500).json({ message: "Eroare la server!" });
+  }
+});
+
+// Forgot Password
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "Utilizatorul nu a fost găsit!" });
+    }
+
+    // Generăm o parolă temporară
+    const tempPassword = Math.random().toString(36).slice(-8);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(tempPassword, salt);
+
+    // Actualizăm parola utilizatorului
+    user.password = hashedPassword;
+    await user.save();
+
+    // Trimitem emailul cu parola temporară
+    await sendPasswordResetEmail(email, tempPassword);
+
+    res.json({ message: "Un email cu parola temporară a fost trimis!" });
+  } catch (error) {
+    console.error("Eroare la resetarea parolei:", error);
     res.status(500).json({ message: "Eroare la server!" });
   }
 });

@@ -122,3 +122,27 @@
 .reset-password-button:hover {
   background-color: #563d7c;
 }
+
+.download-diploma-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px 0;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.download-diploma-button:hover {
+  background-color: #218838;
+}
+
+.download-diploma-button:active {
+  transform: scale(0.98);
+}

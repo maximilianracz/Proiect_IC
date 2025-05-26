@@ -101,7 +101,12 @@ const DonariDeschise = () => {
   return (
     <div className="donatii-container">
       <div className="header">
-        <div className="user-greeting">
+        <div 
+          className="user-greeting" 
+          onClick={handleGoToProfil}
+          style={{ cursor: "pointer" }}
+          title="Mergi la profil"
+        >
           👋 Hello, <span className="username">{user?.username}</span>
         </div>
         <button className="back-button" onClick={() => navigate("/meniu")}>

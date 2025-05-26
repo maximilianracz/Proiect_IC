@@ -118,7 +118,12 @@ const Harta = () => {
     <div className="harta-page">
       <div className="harta-header">
         {username && (
-          <div className="user-greeting" onClick={handleGoToProfil}>
+          <div 
+            className="user-greeting" 
+            onClick={handleGoToProfil}
+            style={{ cursor: "pointer" }}
+            title="Mergi la profil"
+          >
             👋 Hello, <span className="username">{username}</span>!
           </div>
         )}

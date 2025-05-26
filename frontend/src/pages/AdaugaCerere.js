@@ -357,90 +357,93 @@ const AdaugaCerere = () => {
     }
   };
 
-  const handleGoToProfil = () => {
-    navigate("/profil");
-  };
-
   return (
-    <div className="form-container">
+    <div className="adauga-cerere-container">
       <div className="header">
-        <div className="user-greeting">
-          👋 Hello, <span className="username">{username}</span>
-        </div>
+        {username && (
+          <div 
+            className="user-greeting" 
+            onClick={() => navigate("/profil")}
+            style={{ cursor: "pointer" }}
+            title="Mergi la profil"
+          >
+            👋 Hello, <span className="username">{username}</span>!
+          </div>
+        )}
         <button className="back-button" onClick={() => navigate("/meniu")}>
           Înapoi la Meniu
         </button>
       </div>
 
-      <h2>📥 Adaugă Cerere Donație</h2>
-      {mesaj && <p className="message">{mesaj}</p>}
-      {error && <p className="error-message">{error}</p>}
+      <div className="form-container">
+        <h2>➕ Adaugă Cerere de Donație</h2>
+        {mesaj && <p className="message">{mesaj}</p>}
+        {error && <p className="error-message">{error}</p>}
 
-      <form onSubmit={handleSubmit} className="donation-form">
-        <input
-          type="text"
-          placeholder="Nume"
-          value={nume}
-          onChange={(e) => setNume(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Adresă"
-          value={adresa}
-          onChange={(e) => setAdresa(e.target.value)}
-          required
-        />
-        
-        {produse.map((produs, index) => (
-          <div key={index} className="produs-group">
-            <div className="image-upload-section">
+        <form onSubmit={handleSubmit} className="donation-form">
+          <input
+            type="text"
+            placeholder="Nume"
+            value={nume}
+            onChange={(e) => setNume(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Adresă"
+            value={adresa}
+            onChange={(e) => setAdresa(e.target.value)}
+            required
+          />
+          
+          {produse.map((produs, index) => (
+            <div key={index} className="produs-group">
+              <div className="image-upload-section">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageChange(index, e)}
+                  className="file-input"
+                />
+                {produs.imaginePreview && (
+                  <div className="image-preview">
+                    <img src={produs.imaginePreview} alt="Preview" />
+                  </div>
+                )}
+              </div>
               <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleImageChange(index, e)}
-                className="file-input"
+                type="text"
+                placeholder="Tip haină"
+                value={produs.tip}
+                onChange={(e) => handleChangeProdus(index, "tip", e.target.value)}
+                required
               />
-              {produs.imaginePreview && (
-                <div className="image-preview">
-                  <img src={produs.imaginePreview} alt="Preview" />
-                </div>
-              )}
+              <input
+                type="text"
+                placeholder="Mărime"
+                value={produs.marime}
+                onChange={(e) => handleChangeProdus(index, "marime", e.target.value)}
+                required
+              />
+              <input
+                type="number"
+                placeholder="Cantitate"
+                min="1"
+                value={produs.cantitate}
+                onChange={(e) => handleChangeProdus(index, "cantitate", e.target.value)}
+                required
+              />
             </div>
-            <input
-              type="text"
-              placeholder="Tip haină"
-              value={produs.tip}
-              onChange={(e) => handleChangeProdus(index, "tip", e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Mărime"
-              value={produs.marime}
-              onChange={(e) => handleChangeProdus(index, "marime", e.target.value)}
-              required
-            />
-            <input
-              type="number"
-              placeholder="Cantitate"
-              min="1"
-              value={produs.cantitate}
-              onChange={(e) => handleChangeProdus(index, "cantitate", e.target.value)}
-              required
-            />
-          </div>
-        ))}
+          ))}
 
-        <button type="button" className="btn secondary" onClick={handleAddProdus}>
-          ➕ Adaugă produs
-        </button>
-        <button type="submit" className="btn primary" disabled={loading}>
-          {loading ? 'Se procesează...' : '🚀 Trimite Cererea'}
-        </button>
-      </form>
-
-      <button className="back-btn" onClick={() => navigate("/meniu")}>⬅️ Înapoi la Meniu</button>
+          <button type="button" className="btn secondary" onClick={handleAddProdus}>
+            ➕ Adaugă produs
+          </button>
+          <button type="submit" className="btn primary" disabled={loading}>
+            {loading ? 'Se procesează...' : '🚀 Trimite Cererea'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

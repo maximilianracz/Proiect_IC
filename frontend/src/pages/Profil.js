@@ -52,6 +52,11 @@ const Profil = () => {
           <h1>👤 Profilul Meu</h1>
           <p><strong>Nume:</strong> {user.username}</p>
           <p><strong>Puncte:</strong> {user.puncte}</p>
+
+          {/* 🔐 Buton schimbare parolă */}
+          <button className="reset-password-button" onClick={() => navigate("/reset-password")}>
+            🔐 Schimbă parola
+          </button>
         </div>
 
         <div className="card donatii-info">

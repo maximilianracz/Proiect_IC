@@ -3,14 +3,14 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "rujaroxana31@gmail.com",       // înlocuiește cu adresa ta Gmail
-    pass: "pbim dlvg vecr cizd"       // vezi PASUL 4
+    user: "centru.donatii@gmail.com",       // înlocuiește cu adresa ta Gmail
+    pass: "udsd fbzm utfv wfjc"       // vezi PASUL 4
   },
 });
 
 async function sendWelcomeEmail(to, name) {
   const mailOptions = {
-    from: "rujaroxana31@gmail.com",
+    from: "centru.donatii@gmail.com",
     to,
     subject: "🎉 Bun venit!",
     text: `Salut ${name},\n\nÎți mulțumim că te-ai înregistrat pe platforma noastră!`,
@@ -21,7 +21,7 @@ async function sendWelcomeEmail(to, name) {
 
 async function sendPasswordResetEmail(to, tempPassword) {
   const mailOptions = {
-    from: "rujaroxana31@gmail.com",
+    from: "centru.donatii@gmail.com",
     to,
     subject: "🔑 Resetare parolă",
     html: `

@@ -55,7 +55,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Forgot Password
+// Resetare parolă - generează și trimite parolă temporară
 router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
 
@@ -80,6 +80,40 @@ router.post("/forgot-password", async (req, res) => {
     res.json({ message: "Un email cu parola temporară a fost trimis!" });
   } catch (error) {
     console.error("Eroare la resetarea parolei:", error);
+    res.status(500).json({ message: "Eroare la server!" });
+  }
+});
+
+// Schimbare parolă după autentificare cu parolă temporară
+router.post("/reset-password", async (req, res) => {
+  const { tempPassword, newPassword } = req.body;
+
+  try {
+    const users = await User.find(); // Verificăm toți userii
+
+    let foundUser = null;
+
+    for (const user of users) {
+      const match = await bcrypt.compare(tempPassword, user.password);
+      if (match) {
+        foundUser = user;
+        break;
+      }
+    }
+
+    if (!foundUser) {
+      return res.status(400).json({ message: "Parola temporară este greșită sau a expirat." });
+    }
+
+    // Setăm noua parolă
+    const salt = await bcrypt.genSalt(10);
+    const hashedNewPassword = await bcrypt.hash(newPassword, salt);
+    foundUser.password = hashedNewPassword;
+    await foundUser.save();
+
+    res.json({ message: "Parola a fost schimbată cu succes!" });
+  } catch (error) {
+    console.error("Eroare la schimbarea parolei:", error);
     res.status(500).json({ message: "Eroare la server!" });
   }
 });

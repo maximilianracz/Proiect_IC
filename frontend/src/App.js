@@ -10,6 +10,7 @@ import DonariDeschise from "./pages/DonariDeschise";
 import Profil from "./pages/Profil";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./pages/ForgotPassword"; // 🔹 Import nou
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/signup" element={<Signup />} /> 
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} /> {/* 🔹 Rută nouă */}
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={<Home />} />
 
         {/* Toate paginile de mai jos sunt protejate */}

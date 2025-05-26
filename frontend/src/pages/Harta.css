@@ -1,91 +1,137 @@
-
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(to right, #c2e9fb, #a1c4fd); 
 }
 
-
 .harta-page {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding: 20px;
 }
 
 .harta-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  position: sticky;
-  top: 0;
-  background: linear-gradient(to right, #c2e9fb, #a1c4fd); 
-  z-index: 10;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  gap: 20px;
 }
 
-
-.harta-header {
-  flex-direction: row; 
-  justify-content: flex-start; 
+.header-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
 }
-
 
 .user-greeting {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: white;
-  background-color: #6c63ff; 
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-width: 300px; 
-  margin-left: auto; 
+  font-size: 16px;
+  color: #333;
+  text-align: right;
 }
-
 
 .username {
-  font-weight: 600;
-  font-size: 1.4rem;
-  margin-left: 0.5rem;
+  font-weight: bold;
+  color: #4CAF50;
 }
 
-
-.back-button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  background: #6c63ff;
+.nearby-button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
   color: white;
   border: none;
-  border-radius: 12px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-right: auto; 
+  font-size: 14px;
+  transition: background-color 0.3s;
+  width: fit-content;
 }
 
+.nearby-button:hover {
+  background-color: #45a049;
+}
+
+.nearby-button.active {
+  background-color: #357abd;
+}
+
+.nearby-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.back-button {
+  padding: 8px 16px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  width: fit-content;
+}
 
 .back-button:hover {
-  background: #574ee2;
-  transform: scale(1.02);
+  background-color: #da190b;
 }
-
 
 .map-container {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.donation-popup {
+  padding: 10px;
+}
+
+.donation-popup h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.donation-popup p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.details-button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s;
+}
+
+.details-button:hover {
+  background-color: #1976D2;
+}
 
 .loading-spinner {
-  text-align: center;
-  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 18px;
+  color: #666;
 }
 
 .error-message {
-  color: red;
-  text-align: center;
-  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 18px;
+  color: #f44336;
 }

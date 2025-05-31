@@ -2,6 +2,7 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  padding-top: 5rem;
   font-family: Arial, sans-serif;
 }
 
@@ -17,85 +18,111 @@
   color: #2c3e50;
   margin: 0 auto;
   text-align: center;
+  font-size: 2rem;
 }
 
 .back-button {
-  position: fixed; 
-  top: 20px;        
-  left: 20px;       
-  
-  padding: 8px 16px;
-  background-color: #3498db;
+  position: fixed;
+  top: 5rem;
+  left: 2rem;
+  padding: 0.5rem 1rem;
+  background-color: #6c63ff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
-  z-index: 1000; 
+  font-weight: 600;
+  transition: all 0.3s ease;
+  z-index: 1000;
 }
 
+.back-button:hover {
+  background-color: #574ee2;
+  transform: translateY(-2px);
+}
 
 .table-container {
   overflow-x: auto;
+  margin-top: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-
 
 .donatori-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-
 
 .donatori-table th {
   background-color: #3498db;
   color: white;
-  padding: 12px;
+  padding: 1rem;
   text-align: left;
+  font-size: 1.1rem;
 }
 
+.donatori-table th:first-child {
+  border-top-left-radius: 8px;
+}
+
+.donatori-table th:last-child {
+  border-top-right-radius: 8px;
+}
 
 .donatori-table td {
-  padding: 12px;
+  padding: 1rem;
   border-bottom: 1px solid #e0e0e0;
+  font-size: 1rem;
+}
+
+.donatori-table tr:last-child td {
+  border-bottom: none;
+}
+
+.donatori-table tr:nth-child(odd) {
+  background-color: #ffffff;
 }
 
 .donatori-table tr:nth-child(even) {
-  background-color: #f8f9fa;
+  background-color: #f2f2f2;
 }
 
 .donatori-table tr:hover {
-  background-color: #e9f7fe;
+  background-color: #e3f2fd;
 }
-
 
 .rank {
   font-weight: bold;
   color: #e67e22;
-  width: 50px;
+  width: 60px;
+  text-align: center;
 }
 
 .username {
   font-weight: bold;
+  color: #2c3e50;
 }
 
 .points {
   color: #27ae60;
   text-align: right;
+  font-weight: bold;
 }
-
 
 .loader,
 .no-data,
 .error-message {
   text-align: center;
-  padding: 40px;
-  font-size: 18px;
+  padding: 2rem;
+  font-size: 1.2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
 }
 
 .error-message {
-  color: #e74c3c;
+  color: #ff5252;
   background-color: #fde8e8;
-  border-radius: 4px;
 }

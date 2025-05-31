@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./Harta.css";
+import Header from "../components/Header";
 
 // Configurare markeri
 delete L.Icon.Default.prototype._getIconUrl;
@@ -226,19 +227,9 @@ const Harta = () => {
 
   return (
     <div className="harta-page">
+      <Header />
       <div className="harta-header">
         <div className="header-buttons">
-          {username && (
-            <div 
-              className="user-greeting" 
-              onClick={handleGoToProfil}
-              style={{ cursor: "pointer" }}
-              title="Mergi la profil"
-            >
-              👋 Hello, <span className="username">{username}</span>!
-            </div>
-          )}
-          
           <button 
             className={`nearby-button ${showNearbyOnly ? 'active' : ''}`}
             onClick={toggleNearbyDonations}

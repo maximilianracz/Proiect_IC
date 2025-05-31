@@ -204,14 +204,13 @@ const AdaugaCerere = () => {
             },
             body: JSON.stringify({
               email: userData.email,
-              password: userData.password // Notă: ar trebui să avem o modalitate mai sigură de a gestiona parola
+              password: userData.password
             })
           });
 
           if (response.ok) {
             const data = await response.json();
             localStorage.setItem('token', data.token);
-            // Continuăm cu request-ul original
           } else {
             setError("❌ Sesiunea a expirat. Veți fi redirecționat către pagina de login...");
             setTimeout(() => {
@@ -247,45 +246,40 @@ const AdaugaCerere = () => {
       if (produse.some(produs => !produs.tip || !produs.marime || !produs.cantitate)) {
         throw new Error("Toate câmpurile produselor sunt obligatorii");
       }
-      
+
       // Pregătim datele pentru trimitere
       const requestData = {
         nume: nume.trim(),
         adresa: adresa.trim(),
-        tip: produse[0].tip.trim(),
-        marime: produse[0].marime.trim(),
-        cantitate: parseInt(produse[0].cantitate) || 1,
-        descriere: "" // Adăugăm câmpul descriere chiar dacă este gol
+        produse: produse.map(produs => ({
+          tip: produs.tip.trim(),
+          marime: produs.marime.trim(),
+          cantitate: Number(produs.cantitate),
+          donat: false,
+          donatedBy: null
+        }))
       };
 
       // Validare suplimentară
-      if (requestData.cantitate < 1) {
-        throw new Error("Cantitatea trebuie să fie cel puțin 1");
+      if (requestData.produse.length === 0) {
+        throw new Error("Trebuie să adăugați cel puțin un produs");
       }
 
-      console.log("Date de trimis:", JSON.stringify(requestData, null, 2));
-
-      const headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${currentToken}`
-      };
-
       console.log("Se trimite cererea către server...");
-      console.log("Headers:", headers);
+      console.log("Request data:", requestData);
       
       const response = await fetch("http://localhost:5000/donatii", {
         method: "POST",
-        headers: headers,
-        mode: 'cors',
-        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${currentToken}`
+        },
         body: JSON.stringify(requestData)
       });
 
       console.log("Răspuns primit de la server:", {
         status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries())
+        statusText: response.statusText
       });
 
       const responseText = await response.text();
@@ -297,6 +291,9 @@ const AdaugaCerere = () => {
           const errorData = JSON.parse(responseText);
           console.error("Detalii eroare server:", errorData);
           errorMessage = errorData.error || errorData.message || errorMessage;
+          if (errorData.details) {
+            errorMessage += `: ${errorData.details}`;
+          }
         } catch (parseError) {
           console.error("Răspunsul nu este JSON valid:", parseError);
           errorMessage = responseText || errorMessage;
@@ -313,14 +310,6 @@ const AdaugaCerere = () => {
         } else {
           throw new Error(errorMessage);
         }
-      }
-
-      let data;
-      try {
-        data = JSON.parse(responseText);
-      } catch (parseError) {
-        console.error("Nu s-a putut parsa răspunsul de succes:", parseError);
-        data = { message: "Cerere procesată cu succes" };
       }
 
       setMesaj("✅ Cerere trimisă cu succes!");
@@ -360,6 +349,9 @@ const AdaugaCerere = () => {
   return (
     <div className="adauga-cerere-container">
       <div className="header">
+        <button className="back-button" onClick={() => navigate("/meniu")}>
+          Înapoi la Meniu
+        </button>
         {username && (
           <div 
             className="user-greeting" 
@@ -370,9 +362,6 @@ const AdaugaCerere = () => {
             👋 Hello, <span className="username">{username}</span>!
           </div>
         )}
-        <button className="back-button" onClick={() => navigate("/meniu")}>
-          Înapoi la Meniu
-        </button>
       </div>
 
       <div className="form-container">

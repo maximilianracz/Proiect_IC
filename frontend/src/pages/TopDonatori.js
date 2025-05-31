@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 import "./TopDonatori.css";
 
 const Top10Donatori = () => {
   const [donatori, setDonatori] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-  
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser) setUser(storedUser);
-
     const fetchDonatori = async () => {
       try {
         const response = await fetch("http://localhost:5000/donatii/top");
@@ -42,26 +38,12 @@ const Top10Donatori = () => {
     fetchDonatori();
   }, []);
 
-  const handleGoToProfil = () => {
-    navigate("/profil");
-  };
-
   return (
     <div className="top-donatori-container">
+      <Header />
       <button className="back-button" onClick={() => navigate("/meniu")}>
         Înapoi la Meniu
       </button>
-
-      {user && (
-        <div 
-          className="user-greeting" 
-          onClick={handleGoToProfil} 
-          style={{ cursor: "pointer" }}
-          title="Mergi la profil"
-        >
-          👋 Hello, <span className="username">{user.username}</span>!
-        </div>
-      )}
 
       <div className="header">
         <h2 className="title">🏆 Top 10 Donatori</h2>

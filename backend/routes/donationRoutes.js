@@ -25,33 +25,58 @@ router.get("/", async (req, res) => {
   res.json(donatii);
 });
 
-router.post("/", upload.single('imagine'), async (req, res) => {
-  const { nume, adresa, tip, marime, cantitate, descriere } = req.body;
+router.post("/", async (req, res) => {
   try {
-    const produs = {
-      tip,
-      marime,
-      cantitate: Number(cantitate),
-      descriere
-    };
-
-    if (req.file) {
-      produs.imagine = {
-        data: req.file.buffer,
-        contentType: req.file.mimetype
-      };
+    console.log("Received request body:", req.body);
+    
+    const { nume, adresa, produse } = req.body;
+    
+    if (!nume || !adresa) {
+      console.error("Missing required fields:", { nume, adresa });
+      return res.status(400).json({ 
+        error: "Lipsesc câmpuri obligatorii",
+        details: { nume: !nume, adresa: !adresa }
+      });
     }
+
+    if (!Array.isArray(produse) || produse.length === 0) {
+      console.error("No products provided or invalid format");
+      return res.status(400).json({ 
+        error: "Trebuie să adăugați cel puțin un produs"
+      });
+    }
+
+    // Validate each product
+    for (const produs of produse) {
+      if (!produs.tip || !produs.marime || !produs.cantitate) {
+        return res.status(400).json({
+          error: "Toate câmpurile produselor sunt obligatorii",
+          details: { produs }
+        });
+      }
+    }
+
+    console.log("Creating donation with products:", produse);
 
     const nouaDonatie = new Donation({
       nume,
       adresa,
-      produse: [produs]
+      produse,
+      status: "deschis"
     });
 
+    console.log("Saving donation:", nouaDonatie);
     await nouaDonatie.save();
+    console.log("Donation saved successfully");
+    
     res.status(201).json(nouaDonatie);
   } catch (err) {
-    res.status(500).json({ error: "Eroare la salvarea donației" });
+    console.error("Eroare la salvarea donației:", err);
+    res.status(500).json({ 
+      error: "Eroare la salvarea donației",
+      details: err.message,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
   }
 });
 
@@ -139,6 +164,7 @@ router.get("/profil/:userId", async (req, res) => {
       donatedItems,
     });
   } catch (err) {
+    console.error("Eroare la obținerea datelor de profil:", err);
     res.status(500).json({ error: "Eroare la obținerea datelor de profil." });
   }
 });

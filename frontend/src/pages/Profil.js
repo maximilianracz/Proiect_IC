@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Badges from "../components/Badges";
 import "./Profil.css";
 
 const Profil = () => {
@@ -8,6 +9,13 @@ const Profil = () => {
   const [loading, setLoading] = useState(true);
   const [isTopDonor, setIsTopDonor] = useState(false);
   const [rank, setRank] = useState(null);
+  const [userStats, setUserStats] = useState({
+    totalDonatii: 0,
+    persoaneAjutate: 0,
+    bluzeDonate: 0,
+    pantaloniDonati: 0,
+    incaltaminteDonata: 0
+  });
 
   const navigate = useNavigate();
 
@@ -25,6 +33,37 @@ const Profil = () => {
 
         setUser(data.user);
         setDonatii(data.donatedItems || []);
+
+        // Calculate user stats
+        const stats = {
+          totalDonatii: data.donatedItems?.reduce((total, item) => total + (item.produs.cantitate || 1), 0) || 0,
+          persoaneAjutate: new Set(data.donatedItems?.map(item => item.donationId)).size || 0,
+          bluzeDonate: data.donatedItems?.reduce((total, item) => {
+            if (item.produs.tip.toLowerCase().includes('bluza') || 
+                item.produs.tip.toLowerCase().includes('tricou') ||
+                item.produs.tip.toLowerCase().includes('cămașă')) {
+              return total + (item.produs.cantitate || 1);
+            }
+            return total;
+          }, 0) || 0,
+          pantaloniDonati: data.donatedItems?.reduce((total, item) => {
+            if (item.produs.tip.toLowerCase().includes('pantaloni') || 
+                item.produs.tip.toLowerCase().includes('blugi')) {
+              return total + (item.produs.cantitate || 1);
+            }
+            return total;
+          }, 0) || 0,
+          incaltaminteDonata: data.donatedItems?.reduce((total, item) => {
+            if (item.produs.tip.toLowerCase().includes('pantofi') || 
+                item.produs.tip.toLowerCase().includes('ghete') ||
+                item.produs.tip.toLowerCase().includes('adidași') ||
+                item.produs.tip.toLowerCase().includes('sandale')) {
+              return total + (item.produs.cantitate || 1);
+            }
+            return total;
+          }, 0) || 0
+        };
+        setUserStats(stats);
 
         // Fetch top donors to check if user is in top 3
         const topResponse = await fetch("http://localhost:5000/donatii/top");
@@ -187,7 +226,7 @@ const Profil = () => {
     <div className="profil-wrapper">
       <div className="profil-container">
         <button className="back-button" onClick={() => navigate("/meniu")}>
-          ⬅️ Înapoi la Meniu
+           Înapoi la Meniu
         </button>
 
         <div className="card user-info">
@@ -209,6 +248,8 @@ const Profil = () => {
             🔐 Schimbă parola
           </button>
         </div>
+
+        <Badges userStats={userStats} />
 
         <div className="card donatii-info">
           <h2>📦 Donațiile Efectuate</h2>

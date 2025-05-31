@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 import "./Meniu.css";
 
 const Meniu = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-
-  useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData && userData.username) {
-      setUsername(userData.username);
-    }
-  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -19,20 +12,9 @@ const Meniu = () => {
     navigate("/login", { replace: true });
   };
 
-  const goToProfil = () => {
-    navigate("/profil"); 
-  };
-
   return (
     <div className="meniu-page">
-      <div className="meniu-header">
-        {username && (
-          <div className="user-greeting" onClick={goToProfil} style={{ cursor: "pointer" }}>
-            👋 Hello, <span className="username">{username}</span>!
-          </div>
-        )}
-      </div>
-
+      <Header />
       <div className="meniu-content">
         <div className="meniu-card">
           <h1 className="meniu-title">📋 Meniu Principal</h1>

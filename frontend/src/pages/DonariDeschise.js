@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 import "./DonariDeschise.css";
 
 const DonariDeschise = () => {
@@ -25,10 +26,6 @@ const DonariDeschise = () => {
 
     fetchDonatii();
   }, []);
-
-  const handleGoToProfil = () => {
-    navigate("/profil");
-  };
 
   const handleDonate = async (donatieId, produsIndex) => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -100,19 +97,10 @@ const DonariDeschise = () => {
 
   return (
     <div className="donatii-container">
-      <div className="header">
-        <div 
-          className="user-greeting" 
-          onClick={handleGoToProfil}
-          style={{ cursor: "pointer" }}
-          title="Mergi la profil"
-        >
-          👋 Hello, <span className="username">{user?.username}</span>
-        </div>
-        <button className="back-button" onClick={() => navigate("/meniu")}>
-          Înapoi la Meniu
-        </button>
-      </div>
+      <Header />
+      <button className="back-button" onClick={() => navigate("/meniu")}>
+        Înapoi la Meniu
+      </button>
 
       <h2>📦 Donări Deschise</h2>
       {feedback && <p className="feedback-message">{feedback}</p>}

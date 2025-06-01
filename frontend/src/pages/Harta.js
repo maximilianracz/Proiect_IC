@@ -115,9 +115,9 @@ const Harta = () => {
         return centerPosition;
       }
 
-      // Folosește serviciul Nominatim de la OpenStreetMap
+      // Folosește proxy-ul nostru din backend
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&countrycodes=ro`
+        `http://localhost:5000/geocode?address=${encodeURIComponent(address)}`
       );
       
       const data = await response.json();

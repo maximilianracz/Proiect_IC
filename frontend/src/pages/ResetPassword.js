@@ -72,7 +72,7 @@ const ResetPassword = () => {
   return (
     <div className="reset-container">
       <button className="back-button" onClick={() => navigate("/profil")}>
-        ⬅️ Înapoi la Profil
+        Înapoi la Profil
       </button>
       <div className="reset-card">
         <h2 className="reset-title">🔒 Schimbare parolă</h2>

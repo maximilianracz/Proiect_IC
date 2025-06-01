@@ -189,14 +189,12 @@ const AdaugaCerere = () => {
       setLoading(true);
       setError("");
       
-      
       const userData = JSON.parse(localStorage.getItem("user"));
       const token = localStorage.getItem('token');
       
       console.log("User data:", userData);
       console.log("Token:", token);
 
-      
       if (userData && !token) {
         try {
           const response = await fetch("http://localhost:5000/auth/login", {
@@ -230,7 +228,6 @@ const AdaugaCerere = () => {
         }
       }
 
-      
       const currentToken = localStorage.getItem('token');
       if (!currentToken) {
         setError("❌ Nu sunteți autentificat. Veți fi redirecționat către pagina de login...");
@@ -240,7 +237,6 @@ const AdaugaCerere = () => {
         return;
       }
 
-     
       if (!nume || !adresa || !dataDonatie || !oraDonatie) {
         throw new Error("Toate câmpurile sunt obligatorii");
       }
@@ -249,12 +245,12 @@ const AdaugaCerere = () => {
         throw new Error("Toate câmpurile produselor sunt obligatorii");
       }
 
-      
       const requestData = {
         nume: nume.trim(),
         adresa: adresa.trim(),
         dataDonatie: dataDonatie,
         oraDonatie: oraDonatie,
+        userId: userData.id,
         produse: produse.map(produs => ({
           tip: produs.tip.trim(),
           marime: produs.marime.trim(),
@@ -264,7 +260,6 @@ const AdaugaCerere = () => {
         }))
       };
 
-      
       if (requestData.produse.length === 0) {
         throw new Error("Trebuie să adăugați cel puțin un produs");
       }

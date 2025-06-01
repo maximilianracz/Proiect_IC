@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const Donation = require("../models/Donatie");
 const User = require("../models/User");
+const { sendReminderEmail } = require('../mailer');
 
 
 const storage = multer.memoryStorage();
@@ -29,7 +30,7 @@ router.post("/", async (req, res) => {
   try {
     console.log("Received request body:", req.body);
     
-    const { nume, adresa, produse, dataDonatie, oraDonatie } = req.body;
+    const { nume, adresa, produse, dataDonatie, oraDonatie, userId } = req.body;
     
     if (!nume || !adresa || !dataDonatie || !oraDonatie) {
       console.error("Missing required fields:", { nume, adresa, dataDonatie, oraDonatie });
@@ -46,7 +47,6 @@ router.post("/", async (req, res) => {
       });
     }
 
-    
     for (const produs of produse) {
       if (!produs.tip || !produs.marime || !produs.cantitate) {
         return res.status(400).json({
@@ -71,6 +71,36 @@ router.post("/", async (req, res) => {
     await nouaDonatie.save();
     console.log("Donation saved successfully");
     
+    
+    if (userId) {
+      const user = await User.findById(userId);
+      if (user && user.email) {
+        
+        const donationDate = new Date(`${dataDonatie}T${oraDonatie}`);
+        const reminderDate = new Date(donationDate.getTime() - (3 * 60 * 60 * 1000));
+        const timeUntilReminder = reminderDate.getTime() - Date.now();
+        
+        console.log('⏰ DEBUG: Programare reminder email');
+        console.log('📅 DEBUG: Detalii programare:', {
+          dataDonatie,
+          oraDonatie,
+          dataReminder: reminderDate.toISOString(),
+          timpPanaLaReminder: `${Math.floor(timeUntilReminder / (1000 * 60 * 60))} ore și ${Math.floor((timeUntilReminder % (1000 * 60 * 60)) / (1000 * 60))} minute`
+        });
+        
+        
+        setTimeout(async () => {
+          console.log('🔔 DEBUG: Se execută reminder-ul programat');
+          console.log('📧 DEBUG: Se trimite email către:', user.email);
+          await sendReminderEmail(user.email, {
+            adresa,
+            dataDonatie,
+            oraDonatie
+          });
+        }, timeUntilReminder);
+      }
+    }
+
     res.status(201).json(nouaDonatie);
   } catch (err) {
     console.error("Eroare la salvarea donației:", err);
@@ -124,15 +154,15 @@ router.put("/:id/doneaza", async (req, res) => {
       return res.status(400).json({ error: "Acest produs a fost deja donat." });
     }
 
-    // Update the product
+   
     produs.donat = true;
     produs.donatedBy = userId;
     
-    // Update user points
+   
     user.puncte += 10 * produs.cantitate;
     await user.save();
 
-    // Update donation status
+   
     const allDonated = donatie.produse.every(p => p.donat);
     const someDonated = donatie.produse.some(p => p.donat);
     

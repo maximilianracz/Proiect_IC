@@ -3,6 +3,60 @@ import { useNavigate } from "react-router-dom";
 import Badges from "../components/Badges";
 import "./Profil.css";
 
+const CountdownTimer = ({ targetDate, targetTime }) => {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const target = new Date(`${targetDate}T${targetTime}`);
+      const difference = target - now;
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60)
+        });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      }
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
+
+    return () => clearInterval(timer);
+  }, [targetDate, targetTime]);
+
+  return (
+    <div className="countdown-timer">
+      <div className="countdown-item">
+        <span className="countdown-value">{timeLeft.days}</span>
+        <span className="countdown-label">zile</span>
+      </div>
+      <div className="countdown-item">
+        <span className="countdown-value">{timeLeft.hours}</span>
+        <span className="countdown-label">ore</span>
+      </div>
+      <div className="countdown-item">
+        <span className="countdown-value">{timeLeft.minutes}</span>
+        <span className="countdown-label">min</span>
+      </div>
+      <div className="countdown-item">
+        <span className="countdown-value">{timeLeft.seconds}</span>
+        <span className="countdown-label">sec</span>
+      </div>
+    </div>
+  );
+};
+
 const Profil = () => {
   const [user, setUser] = useState(null);
   const [donatii, setDonatii] = useState([]);
@@ -30,6 +84,8 @@ const Profil = () => {
       try {
         const response = await fetch(`http://localhost:5000/donatii/profil/${userData.id}`);
         const data = await response.json();
+        
+        console.log("Donation data received:", data.donatedItems); // Debug log
 
         setUser(data.user);
         setDonatii(data.donatedItems || []);
@@ -257,17 +313,27 @@ const Profil = () => {
             <p className="no-donations">Nu ai efectuat donații încă.</p>
           ) : (
             <div className="donatii-list">
-              {donatii.map((donatie) => (
-                <div key={donatie.donationId} className="donatie-card">
-                  <h3>{donatie.nume}</h3>
-                  <p><strong>Adresă:</strong> {donatie.adresa}</p>
-                  <div className="produse">
-                    <span className="produs-tag">
-                      {donatie.produs.tip} ({donatie.produs.marime}) x{donatie.produs.cantitate}
-                    </span>
+              {donatii.map((donatie) => {
+                console.log("Rendering donation:", donatie); // Debug log
+                return (
+                  <div key={donatie.donationId} className="donatie-card">
+                    <h3>{donatie.nume}</h3>
+                    <p><strong>Adresă:</strong> {donatie.adresa}</p>
+                    <div className="produse">
+                      <span className="produs-tag">
+                        {donatie.produs.tip} ({donatie.produs.marime}) x{donatie.produs.cantitate}
+                      </span>
+                    </div>
+                    <div className="donation-countdown">
+                      <p className="countdown-title">⏰ Timp rămas până la donație:</p>
+                      <CountdownTimer 
+                        targetDate={donatie.dataDonatie || new Date().toISOString().split('T')[0]} 
+                        targetTime={donatie.oraDonatie || "12:00"} 
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

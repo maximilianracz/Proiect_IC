@@ -3,6 +3,60 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "./DonariDeschise.css";
 
+const CountdownTimer = ({ targetDate, targetTime }) => {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const target = new Date(`${targetDate}T${targetTime}`);
+      const difference = target - now;
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60)
+        });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      }
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
+
+    return () => clearInterval(timer);
+  }, [targetDate, targetTime]);
+
+  return (
+    <div className="countdown-timer">
+      <div className="countdown-item">
+        <span className="countdown-value">{timeLeft.days}</span>
+        <span className="countdown-label">zile</span>
+      </div>
+      <div className="countdown-item">
+        <span className="countdown-value">{timeLeft.hours}</span>
+        <span className="countdown-label">ore</span>
+      </div>
+      <div className="countdown-item">
+        <span className="countdown-value">{timeLeft.minutes}</span>
+        <span className="countdown-label">min</span>
+      </div>
+      <div className="countdown-item">
+        <span className="countdown-value">{timeLeft.seconds}</span>
+        <span className="countdown-label">sec</span>
+      </div>
+    </div>
+  );
+};
+
 const DonariDeschise = () => {
   const [donatii, setDonatii] = useState([]);
   const [user, setUser] = useState(null);
@@ -37,6 +91,12 @@ const DonariDeschise = () => {
     setLoading(prev => ({ ...prev, [`${donatieId}-${produsIndex}`]: true }));
 
     try {
+      console.log("Sending donation request:", {
+        donatieId,
+        produsIndex,
+        userId: user.id
+      });
+
       const response = await fetch(`http://localhost:5000/donatii/${donatieId}/doneaza`, {
         method: "PUT",
         headers: {
@@ -48,47 +108,43 @@ const DonariDeschise = () => {
         }),
       });
 
-      if (response.ok) {
-        
-        setDonatii(prevDonatii => 
-          prevDonatii.map(d => {
-            if (d._id === donatieId) {
-              const updatedProduse = [...d.produse];
-              updatedProduse[produsIndex] = {
-                ...updatedProduse[produsIndex],
-                donat: true
-              };
-              
-              
-              const allDonated = updatedProduse.every(p => p.donat);
-              const someDonated = updatedProduse.some(p => p.donat);
-              
-              return {
-                ...d,
-                produse: updatedProduse,
-                status: allDonated ? "inchis" : someDonated ? "partial" : "deschis"
-              };
-            }
-            return d;
-          })
-        );
-        
-        
-        const cantitate = donatii.find(d => d._id === donatieId)?.produse[produsIndex]?.cantitate || 1;
-        const updatedUser = { 
-          ...user, 
-          puncte: (user.puncte || 0) + (10 * cantitate) 
-        };
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-        setUser(updatedUser);
-
-        setFeedback("✅ Produsul a fost donat cu succes!");
-      } else {
-        setFeedback("❌ Eroare la donarea produsului!");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Eroare la donarea produsului!");
       }
+
+      const data = await response.json();
+      
+      setDonatii(prevDonatii => 
+        prevDonatii.map(d => {
+          if (d._id === donatieId) {
+            const updatedProduse = [...d.produse];
+            updatedProduse[produsIndex] = {
+              ...updatedProduse[produsIndex],
+              donat: true
+            };
+            
+            return {
+              ...d,
+              produse: updatedProduse,
+              status: data.donationStatus
+            };
+          }
+          return d;
+        })
+      );
+      
+      const updatedUser = { 
+        ...user, 
+        puncte: data.newPoints
+      };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
+
+      setFeedback("✅ Produsul a fost donat cu succes!");
     } catch (err) {
       console.error("Eroare:", err);
-      setFeedback("❌ Eroare la donarea produsului!");
+      setFeedback(`❌ ${err.message}`);
     } finally {
       setLoading(prev => ({ ...prev, [`${donatieId}-${produsIndex}`]: false }));
       setTimeout(() => setFeedback(""), 3000);
@@ -111,6 +167,15 @@ const DonariDeschise = () => {
           <div key={donatie._id} className="donatie-card fade-in">
             <h3>{donatie.nume} {donatie.status === "partial" && "(partial)"}</h3>
             <p><strong>📍 Adresă:</strong> {donatie.adresa}</p>
+            {donatie.dataDonatie && donatie.oraDonatie && (
+              <div className="donation-countdown">
+                <p className="countdown-title">⏰ Timp rămas până la donație:</p>
+                <CountdownTimer 
+                  targetDate={donatie.dataDonatie} 
+                  targetTime={donatie.oraDonatie} 
+                />
+              </div>
+            )}
             <ul>
               {donatie.produse.map((produs, i) => (
                 <li key={i}>

@@ -241,6 +241,50 @@ body {
   margin-bottom: 5px;
 }
 
+.donation-countdown {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.countdown-title {
+  font-size: 0.9rem;
+  color: #495057;
+  margin-bottom: 8px;
+}
+
+.countdown-timer {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 5px;
+}
+
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 50px;
+}
+
+.countdown-value {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #28a745;
+  background-color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.countdown-label {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
 @media (max-width: 768px) {
   .profil-container {
     padding: 10px;

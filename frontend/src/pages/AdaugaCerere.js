@@ -57,6 +57,8 @@ const clothingTranslations = {
 const AdaugaCerere = () => {
   const [nume, setNume] = useState("");
   const [adresa, setAdresa] = useState("");
+  const [dataDonatie, setDataDonatie] = useState("");
+  const [oraDonatie, setOraDonatie] = useState("");
   const [produse, setProduse] = useState([{ 
     tip: "", 
     marime: "", 
@@ -239,7 +241,7 @@ const AdaugaCerere = () => {
       }
 
      
-      if (!nume || !adresa) {
+      if (!nume || !adresa || !dataDonatie || !oraDonatie) {
         throw new Error("Toate câmpurile sunt obligatorii");
       }
 
@@ -251,6 +253,8 @@ const AdaugaCerere = () => {
       const requestData = {
         nume: nume.trim(),
         adresa: adresa.trim(),
+        dataDonatie: dataDonatie,
+        oraDonatie: oraDonatie,
         produse: produse.map(produs => ({
           tip: produs.tip.trim(),
           marime: produs.marime.trim(),
@@ -315,6 +319,8 @@ const AdaugaCerere = () => {
       setMesaj("✅ Cerere trimisă cu succes!");
       setNume("");
       setAdresa("");
+      setDataDonatie("");
+      setOraDonatie("");
       setProduse([{ 
         tip: "", 
         marime: "", 
@@ -382,6 +388,19 @@ const AdaugaCerere = () => {
             placeholder="Adresă"
             value={adresa}
             onChange={(e) => setAdresa(e.target.value)}
+            required
+          />
+          <input
+            type="date"
+            value={dataDonatie}
+            onChange={(e) => setDataDonatie(e.target.value)}
+            required
+            min={new Date().toISOString().split('T')[0]}
+          />
+          <input
+            type="time"
+            value={oraDonatie}
+            onChange={(e) => setOraDonatie(e.target.value)}
             required
           />
           

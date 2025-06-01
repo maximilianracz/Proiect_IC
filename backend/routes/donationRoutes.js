@@ -29,13 +29,13 @@ router.post("/", async (req, res) => {
   try {
     console.log("Received request body:", req.body);
     
-    const { nume, adresa, produse } = req.body;
+    const { nume, adresa, produse, dataDonatie, oraDonatie } = req.body;
     
-    if (!nume || !adresa) {
-      console.error("Missing required fields:", { nume, adresa });
+    if (!nume || !adresa || !dataDonatie || !oraDonatie) {
+      console.error("Missing required fields:", { nume, adresa, dataDonatie, oraDonatie });
       return res.status(400).json({ 
         error: "Lipsesc câmpuri obligatorii",
-        details: { nume: !nume, adresa: !adresa }
+        details: { nume: !nume, adresa: !adresa, dataDonatie: !dataDonatie, oraDonatie: !oraDonatie }
       });
     }
 
@@ -61,6 +61,8 @@ router.post("/", async (req, res) => {
     const nouaDonatie = new Donation({
       nume,
       adresa,
+      dataDonatie,
+      oraDonatie,
       produse,
       status: "deschis"
     });
@@ -85,38 +87,79 @@ router.put("/:id/doneaza", async (req, res) => {
   const donatieId = req.params.id;
 
   try {
+    console.log("Donation request received:", { donatieId, userId, produsIndex });
+
+    if (!userId || produsIndex === undefined) {
+      return res.status(400).json({ 
+        error: "Lipsesc câmpuri obligatorii",
+        details: { userId: !userId, produsIndex: produsIndex === undefined }
+      });
+    }
+
     const donatie = await Donation.findById(donatieId);
-    if (!donatie) return res.status(404).json({ error: "Donația nu a fost găsită." });
+    if (!donatie) {
+      console.error("Donation not found:", donatieId);
+      return res.status(404).json({ error: "Donația nu a fost găsită." });
+    }
 
     const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ error: "Utilizatorul nu a fost găsit." });
-
-   
-    if (produsIndex >= 0 && produsIndex < donatie.produse.length) {
-      donatie.produse[produsIndex].donat = true;
-      donatie.produse[produsIndex].donatedBy = userId;
-      
-      
-      user.puncte += 10 * donatie.produse[produsIndex].cantitate;
-      await user.save();
-
-      
-      const allDonated = donatie.produse.every(p => p.donat);
-      const someDonated = donatie.produse.some(p => p.donat);
-      
-      if (allDonated) {
-        donatie.status = "inchis";
-      } else if (someDonated) {
-        donatie.status = "partial";
-      }
-
-      await donatie.save();
-      res.json({ message: "Produsul a fost donat cu succes." });
-    } else {
-      res.status(400).json({ error: "Index produs invalid." });
+    if (!user) {
+      console.error("User not found:", userId);
+      return res.status(404).json({ error: "Utilizatorul nu a fost găsit." });
     }
+
+    if (produsIndex < 0 || produsIndex >= donatie.produse.length) {
+      console.error("Invalid product index:", produsIndex);
+      return res.status(400).json({ 
+        error: "Index produs invalid.",
+        details: { 
+          providedIndex: produsIndex,
+          validRange: `0-${donatie.produse.length - 1}`
+        }
+      });
+    }
+
+    const produs = donatie.produse[produsIndex];
+    if (produs.donat) {
+      return res.status(400).json({ error: "Acest produs a fost deja donat." });
+    }
+
+    // Update the product
+    produs.donat = true;
+    produs.donatedBy = userId;
+    
+    // Update user points
+    user.puncte += 10 * produs.cantitate;
+    await user.save();
+
+    // Update donation status
+    const allDonated = donatie.produse.every(p => p.donat);
+    const someDonated = donatie.produse.some(p => p.donat);
+    
+    if (allDonated) {
+      donatie.status = "inchis";
+    } else if (someDonated) {
+      donatie.status = "partial";
+    }
+
+    await donatie.save();
+    console.log("Donation updated successfully:", {
+      donatieId,
+      produsIndex,
+      newStatus: donatie.status
+    });
+
+    res.json({ 
+      message: "Produsul a fost donat cu succes.",
+      newPoints: user.puncte,
+      donationStatus: donatie.status
+    });
   } catch (err) {
-    res.status(500).json({ error: "Eroare la procesarea donației." });
+    console.error("Error processing donation:", err);
+    res.status(500).json({ 
+      error: "Eroare la procesarea donației.",
+      details: err.message
+    });
   }
 });
 
@@ -153,6 +196,8 @@ router.get("/profil/:userId", async (req, res) => {
             donationId: donation._id,
             nume: donation.nume,
             adresa: donation.adresa,
+            dataDonatie: donation.dataDonatie,
+            oraDonatie: donation.oraDonatie,
             produs: produs
           });
         }

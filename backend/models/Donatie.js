@@ -3,6 +3,14 @@ const mongoose = require("mongoose");
 const donatieSchema = new mongoose.Schema({
   nume: String,
   adresa: String,
+  dataDonatie: {
+    type: String,
+    required: true
+  },
+  oraDonatie: {
+    type: String,
+    required: true
+  },
   produse: [
     {
       tip: String,

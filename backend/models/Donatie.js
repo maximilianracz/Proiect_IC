@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 const donatieSchema = new mongoose.Schema({
   nume: String,
   adresa: String,
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
   dataDonatie: {
     type: String,
     required: true

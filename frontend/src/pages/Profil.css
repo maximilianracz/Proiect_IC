@@ -231,14 +231,14 @@ body {
 }
 
 .produs-tag {
-  display: inline-block;
-  background-color: #e9ecef;
-  padding: 5px 10px;
-  border-radius: 15px;
-  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin: 4px;
+  font-size: 0.9rem;
   color: #495057;
-  margin-right: 5px;
-  margin-bottom: 5px;
 }
 
 .donation-countdown {
@@ -283,6 +283,43 @@ body {
   font-size: 0.8rem;
   color: #6c757d;
   margin-top: 4px;
+}
+
+/* Styles for countdown in created donations section */
+.created-donations .countdown-value {
+  color: #1976d2;
+}
+
+.created-donations .countdown-title {
+  color: #1976d2;
+}
+
+.created-donations .countdown-label {
+  color: #1976d2;
+}
+
+.created-donations {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.created-donations h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.donated-badge {
+  background-color: #28a745;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-left: 8px;
 }
 
 @media (max-width: 768px) {

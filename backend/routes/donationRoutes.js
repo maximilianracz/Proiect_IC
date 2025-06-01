@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const Donation = require("../models/Donatie");
 const User = require("../models/User");
-const { sendReminderEmail } = require('../mailer');
+const { sendReminderEmail, sendDonationRequestReminderEmail } = require('../mailer');
 
 
 const storage = multer.memoryStorage();
@@ -32,11 +32,11 @@ router.post("/", async (req, res) => {
     
     const { nume, adresa, produse, dataDonatie, oraDonatie, userId } = req.body;
     
-    if (!nume || !adresa || !dataDonatie || !oraDonatie) {
-      console.error("Missing required fields:", { nume, adresa, dataDonatie, oraDonatie });
+    if (!nume || !adresa || !dataDonatie || !oraDonatie || !userId) {
+      console.error("Missing required fields:", { nume, adresa, dataDonatie, oraDonatie, userId });
       return res.status(400).json({ 
         error: "Lipsesc câmpuri obligatorii",
-        details: { nume: !nume, adresa: !adresa, dataDonatie: !dataDonatie, oraDonatie: !oraDonatie }
+        details: { nume: !nume, adresa: !adresa, dataDonatie: !dataDonatie, oraDonatie: !oraDonatie, userId: !userId }
       });
     }
 
@@ -61,6 +61,7 @@ router.post("/", async (req, res) => {
     const nouaDonatie = new Donation({
       nume,
       adresa,
+      userId,
       dataDonatie,
       oraDonatie,
       produse,
@@ -71,16 +72,14 @@ router.post("/", async (req, res) => {
     await nouaDonatie.save();
     console.log("Donation saved successfully");
     
-    
     if (userId) {
       const user = await User.findById(userId);
       if (user && user.email) {
-        
         const donationDate = new Date(`${dataDonatie}T${oraDonatie}`);
         const reminderDate = new Date(donationDate.getTime() - (3 * 60 * 60 * 1000));
         const timeUntilReminder = reminderDate.getTime() - Date.now();
         
-        console.log('⏰ DEBUG: Programare reminder email');
+        console.log('⏰ DEBUG: Programare reminder email pentru cerere de donație');
         console.log('📅 DEBUG: Detalii programare:', {
           dataDonatie,
           oraDonatie,
@@ -88,14 +87,14 @@ router.post("/", async (req, res) => {
           timpPanaLaReminder: `${Math.floor(timeUntilReminder / (1000 * 60 * 60))} ore și ${Math.floor((timeUntilReminder % (1000 * 60 * 60)) / (1000 * 60))} minute`
         });
         
-        
         setTimeout(async () => {
-          console.log('🔔 DEBUG: Se execută reminder-ul programat');
+          console.log('🔔 DEBUG: Se execută reminder-ul programat pentru cerere de donație');
           console.log('📧 DEBUG: Se trimite email către:', user.email);
-          await sendReminderEmail(user.email, {
+          await sendDonationRequestReminderEmail(user.email, {
             adresa,
             dataDonatie,
-            oraDonatie
+            oraDonatie,
+            produse
           });
         }, timeUntilReminder);
       }
@@ -213,9 +212,14 @@ router.get("/profil/:userId", async (req, res) => {
     const user = await User.findById(userId).select("username puncte");
     if (!user) return res.status(404).json({ error: "Utilizatorul nu a fost găsit." });
 
-    
+    // Get donations where user is the donor
     const donations = await Donation.find({
       "produse.donatedBy": userId
+    });
+
+    // Get donations created by the user
+    const createdDonations = await Donation.find({
+      userId: userId
     });
 
     const donatedItems = [];
@@ -237,6 +241,7 @@ router.get("/profil/:userId", async (req, res) => {
     res.json({
       user,
       donatedItems,
+      createdDonations
     });
   } catch (err) {
     console.error("Eroare la obținerea datelor de profil:", err);

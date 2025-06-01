@@ -60,6 +60,7 @@ const CountdownTimer = ({ targetDate, targetTime }) => {
 const Profil = () => {
   const [user, setUser] = useState(null);
   const [donatii, setDonatii] = useState([]);
+  const [createdDonations, setCreatedDonations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isTopDonor, setIsTopDonor] = useState(false);
   const [rank, setRank] = useState(null);
@@ -89,6 +90,7 @@ const Profil = () => {
 
         setUser(data.user);
         setDonatii(data.donatedItems || []);
+        setCreatedDonations(data.createdDonations || []);
 
         
         const stats = {
@@ -334,6 +336,38 @@ const Profil = () => {
                   </div>
                 );
               })}
+            </div>
+          )}
+        </div>
+
+        <div className="card created-donations">
+          <h2>📝 Cererile Mele de Donație</h2>
+          {createdDonations.length === 0 ? (
+            <p className="no-donations">Nu ai creat nicio cerere de donație încă.</p>
+          ) : (
+            <div className="donatii-list">
+              {createdDonations.map((donatie) => (
+                <div key={donatie._id} className="donatie-card">
+                  <h3>{donatie.nume}</h3>
+                  <p><strong>Adresă:</strong> {donatie.adresa}</p>
+                  <p><strong>Status:</strong> {donatie.status}</p>
+                  <div className="produse">
+                    {donatie.produse.map((produs, index) => (
+                      <span key={index} className="produs-tag">
+                        {produs.tip} ({produs.marime}) x{produs.cantitate}
+                        {produs.donat && <span className="donated-badge">✓ Donat</span>}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="donation-countdown">
+                    <p className="countdown-title">⏰ Timp rămas până la donație:</p>
+                    <CountdownTimer 
+                      targetDate={donatie.dataDonatie} 
+                      targetTime={donatie.oraDonatie} 
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>

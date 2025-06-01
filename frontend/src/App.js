@@ -9,7 +9,7 @@ import TopDonatori from "./pages/TopDonatori";
 import DonariDeschise from "./pages/DonariDeschise";
 import Profil from "./pages/Profil";
 import ProtectedRoute from "./components/ProtectedRoute";
-import ForgotPassword from "./pages/ForgotPassword"; // 🔹 Import nou
+import ForgotPassword from "./pages/ForgotPassword"; 
 import ResetPassword from "./pages/ResetPassword";
 
 function App() {
@@ -18,11 +18,11 @@ function App() {
       <Routes>
         <Route path="/signup" element={<Signup />} /> 
         <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} /> {/* 🔹 Rută nouă */}
+        <Route path="/forgot-password" element={<ForgotPassword />} /> 
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={<Home />} />
 
-        {/* Toate paginile de mai jos sunt protejate */}
+        
         <Route
           path="/meniu"
           element={

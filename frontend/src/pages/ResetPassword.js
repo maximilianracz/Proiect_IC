@@ -55,7 +55,7 @@ const ResetPassword = () => {
         setNewPassword("");
         setConfirmPassword("");
 
-        // 🔁 Redirecționează către profil după 1.5 secunde
+        
         setTimeout(() => {
           navigate("/profil");
         }, 1500);

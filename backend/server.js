@@ -17,7 +17,7 @@ app.use(cors({
 }));
 console.log(process.env.MONGO_URI);
 
-// Conectare la MongoDB
+
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -25,14 +25,13 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log("MongoDB conectat"))
 .catch((err) => console.log(err));
 
-// Importăm rutele
 const authRoutes = require("./routes/authRoutes");
 app.use("/auth", authRoutes);
 
 const donationRoutes = require("./routes/donationRoutes");
 app.use("/donatii", donationRoutes);
 
-// Proxy endpoint pentru geocoding
+
 app.get("/geocode", async (req, res) => {
   try {
     const { address } = req.query;

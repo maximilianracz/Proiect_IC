@@ -4,7 +4,7 @@ import * as tf from '@tensorflow/tfjs';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import "./AdaugaCerere.css";
 
-// Mapare precisă pentru traduceri
+
 const clothingTranslations = {
   'shirt': 'Cămașă',
   't-shirt': 'Tricou',
@@ -71,7 +71,7 @@ const AdaugaCerere = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Load the MobileNet model
+ 
   useEffect(() => {
     const loadModel = async () => {
       try {
@@ -86,7 +86,7 @@ const AdaugaCerere = () => {
     loadModel();
   }, []);
 
-  // Preluăm numele utilizatorului din localStorage
+ 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData && userData.username) {
@@ -95,10 +95,10 @@ const AdaugaCerere = () => {
   }, []);
 
   const getBestClothingMatch = (predictions) => {
-    // Sortăm predicțiile după probabilitate
+    
     const sortedPredictions = predictions.sort((a, b) => b.probability - a.probability);
     
-    // Căutăm prima predicție care se potrivește cu un tip de haină cunoscut
+   
     for (const pred of sortedPredictions) {
       const className = pred.className.toLowerCase();
       for (const [key, value] of Object.entries(clothingTranslations)) {
@@ -117,10 +117,10 @@ const AdaugaCerere = () => {
         setLoading(true);
         setError("");
 
-        // Create a temporary URL for the image
+        
         const imageUrl = URL.createObjectURL(file);
         
-        // Update the product with the image preview
+        
         const newProduse = [...produse];
         newProduse[index] = {
           ...newProduse[index],
@@ -129,12 +129,12 @@ const AdaugaCerere = () => {
         };
         setProduse(newProduse);
 
-        // Perform clothing recognition
+        
         if (model) {
           const img = new Image();
           img.src = imageUrl;
           
-          // Wait for the image to load
+          
           await new Promise((resolve, reject) => {
             img.onload = resolve;
             img.onerror = reject;
@@ -187,14 +187,14 @@ const AdaugaCerere = () => {
       setLoading(true);
       setError("");
       
-      // Verificare autentificare
+      
       const userData = JSON.parse(localStorage.getItem("user"));
       const token = localStorage.getItem('token');
       
       console.log("User data:", userData);
       console.log("Token:", token);
 
-      // Dacă avem userData dar nu avem token, încercăm să reautentificăm
+      
       if (userData && !token) {
         try {
           const response = await fetch("http://localhost:5000/auth/login", {
@@ -228,7 +228,7 @@ const AdaugaCerere = () => {
         }
       }
 
-      // Verificăm din nou token-ul după reautentificare
+      
       const currentToken = localStorage.getItem('token');
       if (!currentToken) {
         setError("❌ Nu sunteți autentificat. Veți fi redirecționat către pagina de login...");
@@ -238,7 +238,7 @@ const AdaugaCerere = () => {
         return;
       }
 
-      // Validare date
+     
       if (!nume || !adresa) {
         throw new Error("Toate câmpurile sunt obligatorii");
       }
@@ -247,7 +247,7 @@ const AdaugaCerere = () => {
         throw new Error("Toate câmpurile produselor sunt obligatorii");
       }
 
-      // Pregătim datele pentru trimitere
+      
       const requestData = {
         nume: nume.trim(),
         adresa: adresa.trim(),
@@ -260,7 +260,7 @@ const AdaugaCerere = () => {
         }))
       };
 
-      // Validare suplimentară
+      
       if (requestData.produse.length === 0) {
         throw new Error("Trebuie să adăugați cel puțin un produs");
       }

@@ -49,7 +49,7 @@ const DonariDeschise = () => {
       });
 
       if (response.ok) {
-        // Update local state to reflect the donation
+        
         setDonatii(prevDonatii => 
           prevDonatii.map(d => {
             if (d._id === donatieId) {
@@ -59,7 +59,7 @@ const DonariDeschise = () => {
                 donat: true
               };
               
-              // Check if all products are donated
+              
               const allDonated = updatedProduse.every(p => p.donat);
               const someDonated = updatedProduse.some(p => p.donat);
               
@@ -73,7 +73,7 @@ const DonariDeschise = () => {
           })
         );
         
-        // Update user points in local storage
+        
         const cantitate = donatii.find(d => d._id === donatieId)?.produse[produsIndex]?.cantitate || 1;
         const updatedUser = { 
           ...user, 

@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css";
 import "./Harta.css";
 import Header from "../components/Header";
 
-// Configurare markeri
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -14,7 +14,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
-// Creăm icon personalizat pentru markerii verzi
+
 const greenIcon = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -24,7 +24,7 @@ const greenIcon = new L.Icon({
   shadowSize: [41, 41]
 });
 
-// Creăm icon personalizat pentru markerii roșii
+
 const redIcon = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -43,7 +43,7 @@ const Harta = () => {
   const [userLocation, setUserLocation] = useState(null);
   const [showNearbyOnly, setShowNearbyOnly] = useState(false);
 
-  // Coordonate centru (România)
+
   const centerPosition = [45.9432, 24.9668];
   const zoomLevel = 7;
 
@@ -55,7 +55,7 @@ const Harta = () => {
   }, []);
 
   useEffect(() => {
-    // Obține locația utilizatorului
+   
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -66,12 +66,12 @@ const Harta = () => {
         },
         (error) => {
           console.error("Eroare la obținerea locației: ", error);
-          // Poți seta o locație implicită sau afișa un mesaj de eroare
+          
         }
       );
     } else {
       console.error("Geolocation nu este suportat de acest browser.");
-      // Poți seta o locație implicită sau afișa un mesaj
+      
     }
 
     const fetchDonations = async () => {
@@ -107,7 +107,7 @@ const Harta = () => {
     fetchDonations();
   }, []);
 
-  // Funcție pentru geocoding (transformă adresă în coordonate)
+  
   const getCoordinatesFromAddress = async (address) => {
     try {
       if (!address) {
@@ -115,7 +115,7 @@ const Harta = () => {
         return centerPosition;
       }
 
-      // Folosește proxy-ul nostru din backend
+      
       const response = await fetch(
         `http://localhost:5000/geocode?address=${encodeURIComponent(address)}`
       );
@@ -126,14 +126,14 @@ const Harta = () => {
         const lat = parseFloat(data[0].lat);
         const lng = parseFloat(data[0].lon);
         
-        // Verificăm dacă coordonatele sunt valide
+        
         if (!isNaN(lat) && !isNaN(lng)) {
           return { lat, lng };
         }
       }
       
-      // Dacă nu avem coordonate valide, returnăm o poziție aleatorie în jurul centrului
-      const randomOffset = 0.5; // Offset mai mic pentru a rămâne în România
+      
+      const randomOffset = 0.5; 
       return {
         lat: centerPosition[0] + (Math.random() - 0.5) * randomOffset,
         lng: centerPosition[1] + (Math.random() - 0.5) * randomOffset
@@ -144,9 +144,9 @@ const Harta = () => {
     }
   };
 
-  // Funcție pentru calcularea distanței între două puncte (folosind formula Haversine)
+  
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // Raza Pământului în kilometri
+    const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     const a =
@@ -154,11 +154,11 @@ const Harta = () => {
       Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c; // Distanța în kilometri
+    const distance = R * c; 
     return distance;
   };
 
-  // Funcție pentru a obține distanța pe drum folosind OSRM
+  
   const getDrivingDistance = async (startLat, startLon, endLat, endLon) => {
     try {
       const response = await fetch(
@@ -166,7 +166,7 @@ const Harta = () => {
       );
       const data = await response.json();
       if (data.routes && data.routes.length > 0) {
-        return data.routes[0].distance / 1000; // Convertim din metri în kilometri
+        return data.routes[0].distance / 1000; 
       }
       return null;
     } catch (error) {
@@ -175,7 +175,7 @@ const Harta = () => {
     }
   };
 
-  // Funcție pentru a filtra donațiile apropiate
+  
   const getNearbyDonations = () => {
     if (!userLocation) return donations;
     
@@ -187,11 +187,11 @@ const Harta = () => {
         donation.lat,
         donation.lng
       );
-      return distance <= 30; // 30 km radius
+      return distance <= 30; 
     });
   };
 
-  // Funcție pentru a determina dacă o donație este aproape
+  
   const isNearby = (donation) => {
     if (!userLocation || !donation.lat || !donation.lng) return false;
     const distance = calculateDistance(
@@ -203,7 +203,7 @@ const Harta = () => {
     return distance <= 30;
   };
 
-  // Funcție pentru a obține icon-ul potrivit pentru marker
+  
   const getMarkerIcon = (donation) => {
     if (!showNearbyOnly) return L.Icon.Default.prototype;
     return isNearby(donation) ? greenIcon : redIcon;

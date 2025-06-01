@@ -4,12 +4,12 @@ const multer = require("multer");
 const Donation = require("../models/Donatie");
 const User = require("../models/User");
 
-// Configure multer for image upload
+
 const storage = multer.memoryStorage();
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB limit
+    fileSize: 5 * 1024 * 1024, 
   },
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith('image/')) {
@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // Validate each product
+    
     for (const produs of produse) {
       if (!produs.tip || !produs.marime || !produs.cantitate) {
         return res.status(400).json({
@@ -91,16 +91,16 @@ router.put("/:id/doneaza", async (req, res) => {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ error: "Utilizatorul nu a fost găsit." });
 
-    // Mark the specific product as donated
+   
     if (produsIndex >= 0 && produsIndex < donatie.produse.length) {
       donatie.produse[produsIndex].donat = true;
       donatie.produse[produsIndex].donatedBy = userId;
       
-      // Add points for this item
+      
       user.puncte += 10 * donatie.produse[produsIndex].cantitate;
       await user.save();
 
-      // Update donation status
+      
       const allDonated = donatie.produse.every(p => p.donat);
       const someDonated = donatie.produse.some(p => p.donat);
       
@@ -140,7 +140,7 @@ router.get("/profil/:userId", async (req, res) => {
     const user = await User.findById(userId).select("username puncte");
     if (!user) return res.status(404).json({ error: "Utilizatorul nu a fost găsit." });
 
-    // Find all products donated by this user across all donations
+    
     const donations = await Donation.find({
       "produse.donatedBy": userId
     });
@@ -169,7 +169,7 @@ router.get("/profil/:userId", async (req, res) => {
   }
 });
 
-// Add a new route to get product image
+
 router.get("/:donationId/produs/:produsIndex/imagine", async (req, res) => {
   try {
     const donatie = await Donation.findById(req.params.donationId);

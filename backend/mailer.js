@@ -3,8 +3,8 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "centru.donatii@gmail.com",       // înlocuiește cu adresa ta Gmail
-    pass: "udsd fbzm utfv wfjc"       // vezi PASUL 4
+    user: "centru.donatii@gmail.com",      
+    pass: "udsd fbzm utfv wfjc"      
   },
 });
 

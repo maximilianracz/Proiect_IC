@@ -139,7 +139,7 @@ const Signup = () => {
             </div>
           </div>
 
-          {/* Reguli parolă */}
+          
           <div className="password-rules">
             <div className={`password-rule ${isLongEnough(password) ? "valid" : "invalid"}`}>
               {isLongEnough(password) ? "✅" : "❌"} Minim 8 caractere
@@ -155,7 +155,7 @@ const Signup = () => {
             </div>
           </div>
 
-          {/* Gradatie putere parolă */}
+          
           <div className="password-strength">
             <div
               className="password-strength-bar"

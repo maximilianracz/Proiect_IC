@@ -6,11 +6,11 @@ const { sendWelcomeEmail, sendPasswordResetEmail } = require("../mailer");
 
 const router = express.Router();
 
-// Înregistrare utilizator
+
 router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
 
-  // Validare format email
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return res.status(400).json({ message: "Email invalid!" });
@@ -26,7 +26,6 @@ router.post("/signup", async (req, res) => {
     const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
 
-    // Trimite email de bun venit
     await sendWelcomeEmail(email, username);
 
     res.status(201).json({ message: "Utilizator creat cu succes!" });
@@ -36,7 +35,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// Login utilizator
+
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -55,7 +54,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Resetare parolă - generează și trimite parolă temporară
+
 router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
 
@@ -65,16 +64,16 @@ router.post("/forgot-password", async (req, res) => {
       return res.status(404).json({ message: "Utilizatorul nu a fost găsit!" });
     }
 
-    // Generăm o parolă temporară
+  
     const tempPassword = Math.random().toString(36).slice(-8);
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(tempPassword, salt);
 
-    // Actualizăm parola utilizatorului
+   
     user.password = hashedPassword;
     await user.save();
 
-    // Trimitem emailul cu parola temporară
+    
     await sendPasswordResetEmail(email, tempPassword);
 
     res.json({ message: "Un email cu parola temporară a fost trimis!" });
@@ -84,12 +83,12 @@ router.post("/forgot-password", async (req, res) => {
   }
 });
 
-// Schimbare parolă după autentificare cu parolă temporară
+
 router.post("/reset-password", async (req, res) => {
   const { tempPassword, newPassword } = req.body;
 
   try {
-    const users = await User.find(); // Verificăm toți userii
+    const users = await User.find(); 
 
     let foundUser = null;
 
@@ -105,7 +104,7 @@ router.post("/reset-password", async (req, res) => {
       return res.status(400).json({ message: "Parola temporară este greșită sau a expirat." });
     }
 
-    // Setăm noua parolă
+    
     const salt = await bcrypt.genSalt(10);
     const hashedNewPassword = await bcrypt.hash(newPassword, salt);
     foundUser.password = hashedNewPassword;
